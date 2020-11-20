@@ -1,0 +1,50 @@
+<div style="padding: 12px !important; font-size: 17px !important;" class="content-heading">
+    Cadastro de Fornecedores
+</div>
+
+<!-- Home -->
+
+<div [hidden]="screen !== 'home'">
+
+    <div class="row">
+        <div (click)="changeScreen('adicionar')" class="col-lg-4 col-md-4 col-sm-4">
+            <a class="no-under">
+            <div class="panel widget bg-green">
+                <div class="row row-table">
+                    <div class="col-xs-3 text-center bg-green-dark pv-lg">
+                        <em class="fa fa-plus fa-2x"></em>
+                    </div>
+                    <div class="col-xs-9 pv-lg">
+                        <div style="font-size: 18px;"><b>Adicionar Novo Fornecedor</b></div>
+                    </div>
+                </div>
+            </div>
+            </a>
+        </div>
+    </div>
+
+    <app-list-fornecedor (filtrando)="filtrando($event)" (eventRemove)="fornecedorSelectedRemove($event)" (eventEdit)="fornecedorSelectedEdit($event)" [fornecedores]="fornecedores"></app-list-fornecedor>
+</div>
+
+<!-- End Home -->
+
+<!-- Adicionar -->
+
+<div [hidden]="screen !== 'adicionar'">
+
+    <app-add-fornecedor (ChangeScreen)="changeScreen($event)" (eventAdd)="addFornecedor($event)"></app-add-fornecedor>
+
+</div>
+
+<!-- End Adicionar -->
+
+<!-- Editar -->
+
+<div [hidden]="screen !== 'editar'">
+
+    <app-edit-fornecedor #editFornecedorComponent (eventEdit)="editFornecedor($event)" (ChangeScreen)="changeScreen($event)"></app-edit-fornecedor>
+
+</div>
+
+<!-- End Editar -->
+

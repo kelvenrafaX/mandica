@@ -1,0 +1,50 @@
+<div style="padding: 12px !important; font-size: 17px !important;" class="content-heading">
+    Cadastro de Compras
+    <button *ngIf="screen !== 'home'" (click)="changeScreen('home')" class="pull-right btn bg-green"><strong> <i class="icon-action-undo fa fa-fw"></i> VOLTAR </strong></button>
+</div>
+
+<!-- Home -->
+
+<div [hidden]="screen !== 'home'">
+
+    <div class="row">
+        <div (click)="changeScreen('adicionar')" class="col-lg-4 col-md-4 col-sm-4">
+            <a class="no-under">
+            <div class="panel widget bg-green">
+                <div class="row row-table">
+                    <div class="col-xs-3 text-center bg-green-dark pv-lg">
+                        <em class="fa fa-plus fa-2x"></em>
+                    </div>
+                    <div class="col-xs-9 pv-lg">
+                        <div style="font-size: 18px;"><b>Adicionar Nova Compra</b></div>
+                    </div>
+                </div>
+            </div>
+            </a>
+        </div>
+    </div>
+
+    <app-list-compra (filtrando)="filtrando($event)" (eventRemove)="compraSelectedRemove($event)" (eventEdit)="compraSelectedEdit($event)" [compras]="compras"></app-list-compra>
+</div>
+
+<!-- End Home -->
+
+<!-- Adicionar -->
+
+<div [hidden]="screen !== 'adicionar'">
+
+    <app-add-compra [compras]="compras" (ChangeScreen)="changeScreen($event)" (eventAdd)="addCompra($event)"></app-add-compra>
+
+</div>
+
+<!-- End Adicionar -->
+
+<!-- Editar -->
+
+<div [hidden]="screen !== 'editar'">
+
+    <app-edit-compra #editCompraComponent (eventEdit)="editCompra($event)" (ChangeScreen)="changeScreen($event)"></app-edit-compra>
+
+</div>
+
+<!-- End Editar -->

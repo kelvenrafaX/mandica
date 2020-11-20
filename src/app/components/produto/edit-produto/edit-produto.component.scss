@@ -1,0 +1,28 @@
+/* Esconde o input */
+input[type='file'] {
+  display: none
+}
+
+/* Aparência que terá o seletor de arquivo */
+#label-arquivo {
+background-color: #3498db;
+border-radius: 5px;
+color: #fff;
+cursor: pointer;
+margin: 10px;
+padding: 6px 20px;
+}
+
+#timelineProfilePic {
+position: relative;
+width: 100%;
+border: 2px dashed #8c8383;
+background-color: #eeeeee;
+cursor: pointer;
+}
+
+img {
+vertical-align: middle;
+border-style: none;
+margin: auto;
+}

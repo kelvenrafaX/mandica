@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-4">
+    <button type='button' class="btn btn-excel" (click)="file.click()">
+      <img width="50px" height="50px" src="assets/img/excel_logo.png" />
+      <strong style="font-size: 15px;">Importar</strong>
+    </button>
+    <input #file type="file" style=" opacity: 0; width: 0%; height: 0%;"  class="form-control" multiple (change)="uploadedFile($event)" placeholder="Upload file" accept=".xlsx">    
+  </div>
+  <div class="col-md-4">
+    <button class="btn bg-green" (click)="AddClientes()">Salvar</button>
+  </div> 
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped table-bordered table-hover table-responsive">
+      <thead>
+          <tr>
+              <th>Nome</th>
+              <th>Cpf/Cnpj</th>
+              <th>Telefone</th>
+              <th>Celular</th>
+              <th>Email</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cliente of clientes">
+          <td>{{cliente.Pessoa.Nome}}</td>
+          <td>{{cliente.Pessoa.Cpf}}</td>
+          <td>{{cliente.Pessoa.Telefone}}</td>
+          <td>{{cliente.Pessoa.Celular}}</td>
+          <td>{{cliente.Pessoa.Email}}</td>
+        </tr>
+        <tr *ngIf="clientes.length === 0">
+            <td colspan="5" class="h3 text-bold text-center">Nenhum cliente importado!</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

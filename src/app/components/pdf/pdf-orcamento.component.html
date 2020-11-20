@@ -1,0 +1,218 @@
+<div *ngIf="orcamento" class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img [src]="imageUrl" alt="">
+        </div>
+        <div class="col-md-4 text-center">
+            <h3>Mandica</h3>
+            contato@lojamandica.com.br <br/>
+            Telefone: (85) 9283-1044 (85) 98696-7687 <br/>
+            CNPJ: 30.635.257/0001-80 <br/>
+            Rodovia CE-040, 2801 - Loja 02 - Guaribas <br/>
+            Eusébio
+        </div>
+        <div class="col-md-4 text-right">
+            <h4>Orçamento Nº: {{orcamento?.Id}}</h4>
+            Data de Emissão: {{orcamento?.DataCadastro | date:"dd/MM/yyyy"}} <br/>
+            Atendente: André Barros
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1>Orçamento</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div style="border: solid 2px grey;" class="col-md-12">
+            <div class="row">
+                <div class="col-md-5">
+                    <span>Nome/R.Social</span>
+                </div>
+                <div class="col-md-2">
+                    <span>CPF/CNPJ</span>
+                </div>
+                <div class="col-md-2">
+                    <span>RG</span>
+                </div>
+                <div class="col-md-2">
+                    <span>Telefone</span>
+                </div>
+                <div class="col-md-1">
+                    <span>Celular</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <span>{{orcamento?.Cliente?.Pessoa.Nome}}</span>
+                </div>
+                <div class="col-md-2">
+                    <span>{{orcamento?.Cliente?.Pessoa.TipoPessoa === "pf" ? orcamento?.Cliente.Pessoa.Cpf : orcamento?.Cliente.Pessoa.Cnpj}}</span>
+                </div>
+                <div class="col-md-2">
+                    <span>{{orcamento?.Cliente?.Pessoa.Rg}}</span>
+                </div>
+                <div class="col-md-2">
+                    <span>{{orcamento?.Cliente?.Pessoa.Telefone}}</span>
+                </div>
+                <div class="col-md-1">
+                    <span>{{orcamento?.Cliente?.Pessoa.Celular}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <span>Endereço</span>
+                </div>
+                <div class="col-md-4">
+                    <span>Email</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <span>{{orcamento?.Cliente?.Pessoa.Enderecos[0].Rua}}</span>
+                </div>
+                <div class="col-md-4">
+                    <span>{{orcamento?.Cliente?.Pessoa.Email}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+        <div style="border: solid 2px grey;" class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    <span>Data do Evento</span>
+                </div>
+                <div class="col-md-3">
+                    <span>Data de Entrega</span>
+                </div>
+                <div class="col-md-3">
+                    <span>Data de Devolução</span>
+                </div>
+                <div class="col-md-1">
+                    <span>Frete</span>
+                </div>
+                <div class="col-md-1">
+                    <span>Diárias</span>
+                </div>
+                <div class="col-md-1">
+                    <span>Itens do Pedido</span>
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-md-3">
+                    <span>{{orcamento?.DataEvento}}</span>
+                </div>
+                <div class="col-md-3">
+                    <span>{{orcamento?.DataEntrega}}</span>
+                </div>
+                <div class="col-md-3">
+                    <span>{{orcamento?.DataDevolucao}}</span>
+                </div>
+                <div class="col-md-1">
+                    <span>{{orcamento?.Frete > 0 ? "Sim" : "Não"}}</span>
+                </div>
+                <div class="col-md-1">
+                    <span>{{orcamento?.Diarias}}</span>
+                </div>
+                <div class="col-md-1">
+                    <span>{{TotalQtd()}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>IMAGEM</th>
+                <th>CÓDIGO</th>
+                <th>ITEM DO PEDIDO</th>
+                <th>QUANTIDADE</th>
+                <th>V.LOC UN.</th>
+                <th>V.REPO. UN.</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let produto of orcamento?.OrcamentoProduto">
+                <td>-</td>
+                <td>{{produto.ProdutoId}}</td>
+                <td>{{produto.Produto.Nome}}</td>
+                <td>{{produto.Quantidade}}</td>
+                <td>{{produto.ValorUnitario}}</td>
+                <td>{{produto?.Produto.ValorUnitarioReposicao}}</td>
+                <td>{{produto.ValorUnitario * produto.Quantidade | currency: "R$ "}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-offset-2 col-md-2 col-md- text-right b">VALOR DO PEDIDO <br/> {{orcamento?.ValorTotal | currency:"R$ "}}</div>
+        <div class="col-md-2 text-right b">ENTRADA <br/> {{ValorEntrada() | currency:"R$ "}}</div>
+        <div class="col-md-2 text-right b">DESCONTO <br/> {{orcamento?.Desconto | currency:"R$ "}}</div>
+        <div class="col-md-2 text-right b">FRETE <br/> {{orcamento?.Frete | currency:"R$ "}}</div>
+        <div class="col-md-2 text-right b">TOTAL <br/> {{orcamento?.ValorTotal - orcamento?.Desconto + orcamento?.Frete | currency:"R$ "}}</div>
+    </div>
+
+    <div class="row text-center" style="margin-top: 10px;">
+        <h3> CONTRATO DE LOCAÇÕES </h3>
+    </div>
+    <div class="row">
+        <h4> 1. IDENTIFICAÇÃO DAS PARTES </h4>
+        <p> LOCADOR: Loja Mandica, com sede EusÃ©bio/CE, na Rodovia CE-040, nº 2801 - Loja 02, bairro Guaribas, inscrita no CNPJ sob o nº 30.635.257/0001-80. </p>
+        <p> LOCATÁRIO: Elizabete Magalhaes De Matos, residente no Brasil, , , identidade nº , CPF nº 026.970.863-40 , residente e domiciliado no(a) , nº , bairro , EusÃ©bio/CE. </p>
+        <p> As partes identificadas acima têm, entre si, justo e acertado, o presente Contrato de Locação, que se regerá pelas cláusulas seguintes e pelas condições de preço, forma e termos de pagamento descritos no presente. </p>
+        <h4> 2. OBRIGAÇÕES DO LOCADOR </h4>
+        <p> Cláusula 1ª: É objeto do presente contrato a locação dos bens móveis constantes do rol de nº 775, parte integrante deste contrato. </p>
+        <p> Cláusula 2ª: A locação terá início em 27/09/2019 às 12:00 horas e término em 30/09/2019 às 12:00 horas. </p>
+        <p> Parágrafo primeiro. A LOCADORA se compromete a entregar os produtos em perfeito estado de conservação e uso, na data estabelecida na cláusula 2ª. </p>
+        <p> Parágrafo segundo. Caso seja constatado dano em algum dos produtos locados, no momento da locação, o LOCADOR se compromete a efetuar a substituição ou troca, independente do seu preço de locação, ou a devida devolução do valor pago pelo aluguel da peça danificada, tudo conforme a disponibilidade do produto ou conveniência da LOCADORA. </p>
+        <h4> 3. DO INADIMPLEMENTO, DO DESCUMPRIMENTO E DA MULTA </h4>
+        <p>Cláusula 3ª: A presente locação terá o valor de R$ 351 (trezentos e cinquenta e um reais)  pelo período contratado, referente aos bens efetivamente locados, devendo ser integralmente pago até a data de início da locação, em dinheiro, cheque, ou outra forma de pagamento em que ocorra a prévia concordância de ambas as partes. </p>
+        <p>Parágrafo primeiro. O LOCATÁRIO poderá fazer reserva antecipada dos produtos mediante o pagamento antecipado de 20% (vinte porcento) do valor total do aluguel e assinatura do presente instrumento. </p>
+        <p>Parágrafo segundo. O valor referente à reserva não será devolvido sob qualquer hipótese, mesmo em caso de cancelamento do contrato. </p>
+        <h4> 4. DO PREÇO E DAS CONDIÇÕES DE PAGAMENTO </h4>
+        <p> Cláusula 4ª: Havendo inadimplemento por parte do LOCATÁRIO quanto ao pagamento do aluguel, deverá incidir sobre o valor do presente instrumento, multa pecuniária de 2%, juros de mora de 1% ao mês e correção monetária. Em caso de cobrança judicial, devem ser acrescidas custas processuais e 20% de honorários advocatícios. </p>
+        <h4> 5. DA RESCISÃO IMOTIVADA </h4>
+        <p> Cláusula 5ª. Poderá o presente instrumento ser rescindido por qualquer uma das partes, em qualquer momento, sem que haja qualquer tipo de motivo relevante, não obstante a outra parte deverá ser avisada previamente por escrito, no prazo de 10 (dez) dias. </p>
+        <p> Cláusula 6ª. Caso o LOCATÁRIO já tenha realizado o pagamento pelo serviço, e mesmo assim, requisite a rescisão imotivada do presente contrato, terá o valor da quantia paga devolvido, deduzindo-se o valor da reserva. </p>
+        <h4> 6. DAS CONDIÇÕES GERAIS </h4>
+        <p> Cláusula 7ª. O LOCATÁRIO deverá conferir os bens no ato da recepção. Após este momento qualquer dano será de sua responsabilidade. </p>
+        <p> Cláusula 8ª. Se for constatado qualquer dano, ou a falta de qualquer bem no momento da devolução, o LOCATÁRIO se obriga a pagar pelo objeto, imediatamente, o valor constante na coluna 'valor de reposição' do rol integrante deste contrato. </p>
+        <p> Cláusula 9ª. Pela devolução após o dia e hora contratados, o LOCATÁRIO pagará por dia ou fração em atraso, o valor do aluguel acrescido de multa de 2% (dois porcento) do total. </p>
+        <h4> 7. DO FORO </h4>
+        <p> Cláusula 10ª. Para dirimir quaisquer controvérsias oriundas do presente contrato, as partes elegem o foro da comarca de  </p>
+
+        <p> Eusébio/CE. </p>
+        <p class="text-right"> EusÃ©bio 26 de JUNHO de 2019 </p>
+
+    </div>
+
+    <div class="row text-center" style="margin-top: 10px;">
+        <div class="col-md-6">
+            ______________________________________
+        </div>
+        <div class="col-md-6">
+            ______________________________________
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-md-6">
+            Loja Mandica
+        </div>
+        <div class="col-md-6">
+            Elizabete Magalhaes De Matos
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-md-6">
+            30.635.257/0001-80
+        </div>
+        <div class="col-md-6">
+            026.970.863-40
+        </div>
+    </div>
+
+    
+</div>

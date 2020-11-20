@@ -1,0 +1,23 @@
+<div class="col-md-12">
+    <div style="margin-bottom: 2rem;" class="row">
+        <div class="col-md-12">
+            <label for="nova-categoria">Nova Categoria</label>
+            <input [(ngModel)]="categoria.Descricao" type="text" name="nova-categoria" class="form-control" oninput="this.value = this.value.toUpperCase()" />
+            <span *ngIf="!validExists()" style="color:red;">Esse nome já existe!</span>
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button [disabled]="!valid()" (click)="addCategoria()" name="add-categoria" class="btn btn-block btn-success" type="submit" value="Cadastrar">
+                <i class="fa fa-plus"></i> Cadastrar
+            </button>
+        </div>        
+    </div>
+</div>
+<!-- <div class="col-md-4">
+    <div class="checkbox c-checkbox">
+        <label>
+        <input [checked]="true" type="checkbox">
+        <span class="fa fa-check"></span>DRE</label>
+    </div>
+</div> -->

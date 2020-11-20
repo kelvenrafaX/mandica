@@ -1,0 +1,144 @@
+<!-- Modal Add Fornecedor -->
+<div class="modal fade" bsModal #addFornecedorModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 90%; margin: 20px auto auto;" class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addFornecedorModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Cadastro de Fornecedor</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <app-add-fornecedor (eventAdd)="eventAddFornecedor($event)"></app-add-fornecedor>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Gallery -->
+<div class="modal fade" bsModal #GalleryModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 90%; margin: 20px auto auto;" class="modal-dialog modal-dialog-centered">
+        <div style="background-color: #f5f7fa;" class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <app-imagem #ImageComponent [modal]="GalleryModal" (eventSelected)="selectImage($event)"></app-imagem>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <form (ngSubmit)="onSubmit()" [formGroup]="form" name="formAdd" class="form-horizontal" role="form">
+            <!-- PRIMEIRA LINHA-->
+            <div class="form-group col-md-12">
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-md-3">
+                        <div id="timelineProfilePic" (click)="GalleryModal.show()">
+                            <img width="100%" [src]="getUrlImagem()">
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-md-4">
+                                <label tooltip="Se você quiser que o sistema gere o código sequencial, basta deixar o campo em branco.">
+                                    Código (Opcional)
+                                </label>
+                                <input formControlName="Id" class="form-control" type="text" placeholder="Digite o código do produto"/>
+                            </div>
+                            <div class="col-md-8">
+                                <label>Nome do Produto</label>
+                                <input formControlName="Nome" class="form-control" type="text" placeholder="Digite o nome do produto"/>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-md-6">
+                                <app-select-categoria (eventSelected)="selectedCategoria($event)" [paiId]="tipo"></app-select-categoria>
+                            </div>
+                            <div class="col-md-6">
+                                <app-select-fornecedor (eventSelected)="selectedFornecedor($event)"></app-select-fornecedor>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-md-3">
+                                <label>Valor unitário de Locacão</label>
+                                <input appInputMoney formControlName="ValorUnitarioLocacao" class="form-control" type="text" placeholder="R$ 0,00"/>
+                            </div>
+                            <div *ngIf="tipo === 0" class="col-md-3">
+                                <label>Valor de Reposição</label>
+                                <input appInputMoney formControlName="ValorUnitarioReposicao" class="form-control" type="text" placeholder="R$ 0,00"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Valor de Custo do Produto</label>
+                                <input appInputMoney formControlName="ValorCustoProduto" class="form-control" type="text" placeholder="R$ 0,00"/> 
+                            </div>
+                            <div class="col-md-3">
+                                <label>Disponível em Estoque</label>
+                                <input [(ngModel)]="disponivelEstoque" [ngModelOptions]="{standalone: true}" class="form-control" type="number" placeholder="0"/> 
+                            </div>
+                        </div>
+                        <div *ngIf="tipo !== 2" class="row" style="margin-bottom: 20px;">
+                            <div class="col-md-3">
+                                <label>Cor</label>
+                                <input formControlName="Cor" class="form-control" type="text" placeholder="Cor"/>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Altura</label>
+                                <input formControlName="Altura" class="form-control" type="number" placeholder="Altura"/> 
+                            </div>
+                            <div class="col-md-2">
+                                <label>Profundidade</label>
+                                <input formControlName="Profundidade" class="form-control" type="number" placeholder="Profundidade"/> 
+                            </div>
+                            <div class="col-md-2">
+                                <label>Largura</label>
+                                <input formControlName="Largura" class="form-control" type="number" placeholder="Largura"/> 
+                            </div>
+                            <div *ngIf="tipo === 0" class="col-md-3">
+                                <div class="checkbox c-checkbox">
+                                    <label>
+                                    <input formControlName="Terceiros" type="checkbox">
+                                    <span class="fa fa-check"></span>Produto de Terceiros</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="tipo === 1" class="row">
+                            <div class="col-md-4">
+                                <label>Estoque Mínimo</label>
+                                <input formControlName="EstoqueMin" class="form-control" type="number" placeholder="Estoque Mínimo"/>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Estoque Máximo</label>
+                                <input formControlName="EstoqueMax" class="form-control" type="number" placeholder="Estoque Máximo"/> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-md-12">
+                        <label>Descricao do Acervo</label>
+                        <textarea formControlName="Descricao" class="form-control" type="text" placeholder="Digite uma descrição para o produto" cols="5" rows="5"></textarea>   
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                            <button *ngIf="!loadingAddProduto" [disabled]="!validForm()" class="btn btn-success btn-block" type="submit">Cadastrar</button>
+                            <button *ngIf="loadingAddProduto" disabled="true" class="btn btn-success btn-block" type="submit"><i class="fa fa-spinner fa-spin fa-fw"></i> Cadastrando</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-danger btn-block" type="button" (click)="clearForm()">Limpar</button>
+                    </div>
+                </div>
+            </div>       
+        </form>
+    </div>
+</div>
+<!-- END row-->
+    

@@ -1,0 +1,265 @@
+<div  class="panel onPrint">
+        <div  class="panel-body">
+            <h4  [ngStyle]="getStatusColor(orcamento?.Status)" class="pull-right text-muted">{{orcamento?.Status}}</h4>
+            <h3  class="mt0">Nº {{orcamento?.TipoPedido}}: {{orcamento?.Id}}</h3>
+            <hr >
+            <div class="row">
+                <div class="col-md-12">
+                    <tabset class="bg-white p0" [justified]="true">
+                        <tab>
+                            <ng-template tabHeading>
+                                <em class="icon-tag fa-fw"></em> Detalhes
+                            </ng-template>
+                            <div>
+                                <div class="table-responsive">
+                                    <div style="padding: 2rem;">
+                                        <div  class="row mb-lg">
+                                            <div  class="col-lg-4 col-xs-6 br pv">
+                                                <div  class="row">
+                                                    <div  class="col-md-2 text-center visible-md visible-lg">
+                                                        <em  class="fa fa-user fa-4x text-muted"></em>
+                                                    </div>
+                                                    <div  class="col-md-10">
+                                                        <h4 >{{orcamento?.Cliente?.Pessoa?.Nome | uppercase}}</h4>
+                                                        <address ></address> CPF: {{orcamento?.Cliente?.Pessoa?.Cpf}}
+                                                        <br >CEL: {{orcamento?.Cliente?.Pessoa?.Celular}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div  *ngIf="orcamento?.Entrega?.Rua != ''" class="col-lg-4 col-xs-6 br pv">
+                                                <div  class="row">
+                                                    <div  class="col-md-2 text-center visible-md visible-lg">
+                                                        <em  class="fa fa-truck fa-4x text-muted"></em>
+                                                    </div>
+                                                    <div  class="col-md-10">
+                                                        <h4 >{{orcamento?.Entrega?.Rua}}</h4>
+                                                        <address ></address>{{orcamento?.Entrega?.Bairro}}, {{orcamento?.Entrega?.Numero}}
+                                                        <br >{{orcamento?.Entrega?.Cep}}
+                                                        <br >Brasil
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div  class="clearfix hidden-md hidden-lg">
+                                                <hr >
+                                            </div>
+                                            <div  class="col-lg-4 col-xs-12 pv">
+                                                <div  class="clearfix">
+                                                    <p  class="pull-left">Data Entrega</p>
+                                                    <p  class="pull-right mr">{{orcamento?.DataEntrega | date: 'dd/MM/yyyy'}}</p>
+                                                </div>
+                                                <div  class="clearfix">
+                                                    <p  class="pull-left">Data Evento</p>
+                                                    <p  class="pull-right mr">{{orcamento?.DataEvento | date: 'dd/MM/yyyy'}}</p>
+                                                </div>
+                                                <div  class="clearfix">
+                                                    <p  class="pull-left">Data Devolução</p>
+                                                    <p  class="pull-right mr">{{orcamento?.DataDevolucao | date: 'dd/MM/yyyy'}}</p>
+                                                </div>
+                                                <div  class="clearfix">
+                                                    <p  class="pull-left">Data Cadastro</p>
+                                                    <p  class="pull-right mr">{{orcamento?.DataCadastro | date: 'dd/MM/yyyy'}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--<div class="row">
+                                            <div class="col-md-6">
+                                                <div  class="panel panel-default">
+                                                    <div  class="panel-body">
+                                                        <div  class="row">
+                                                            <div  class="col-md-12">
+                                                                <p  class="lead bb">Pagamentos</p>
+                                                                <form  class="form-horizontal p-20 ng-untouched ng-pristine ng-valid">
+                                                                    <div  class="form-group">
+                                                                        <div class="col-sm-4">Formas de Pagamento:</div>
+                                                                        <div class="col-sm-8">
+                                                                            <strong >{{formPagt}}</strong>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div  class="form-group">
+                                                                        <div  class="col-sm-4">Qtd Parcelas:</div>
+                                                                        <div  class="col-sm-8">
+                                                                            <strong >{{orcamento.Plano}}</strong>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div  class="form-group">
+                                                                        <div  class="col-sm-4">Bandeira:</div>
+                                                                        <div  class="col-sm-8">
+                                                                            <strong >{{orcamento.Bandeira?.Descricao}}</strong>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div  class="form-group">
+                                                                        <div  class="col-sm-4">Valor total pendente:</div>
+                                                                        <div  class="col-sm-8">
+                                                                            <strong >Implementar</strong>
+                                                                        </div>
+                                                                    </div>                                        
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h4>Observação</h4>
+                                                <p>{{orcamento.Obs}}</p>
+                                            </div>
+                                        </div> -->
+                                        <div  class="table-responsive table-bordered mb-lg">
+                                            <table  class="table">
+                                                <thead >
+                                                    <tr >
+                                                        <th >Item #</th>
+                                                        <th >Descrição</th>
+                                                        <th >Quantidade</th>
+                                                        <th >Preço Unitário</th>
+                                                        <th  class="text-right">Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody >
+                                                    <tr *ngFor="let produto of orcamento?.OrcamentoProduto" >
+                                                        <td >{{produto.Id}}</td>
+                                                        <td >{{produto.Produto.Nome | uppercase}}</td>
+                                                        <td >{{produto.Quantidade}}</td>
+                                                        <td >{{produto.ValorUnitario | currency: 'R$ '}}</td>
+                                                        <td  class="text-right">{{produto.Quantidade * produto.ValorUnitario | currency: 'R$ '}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div  class="row">
+                                            <div  class="col-sm-offset-8 col-sm-4 pv">
+                                                <div  class="clearfix">
+                                                    <p  class="pull-left">Subtotal</p>
+                                                    <p  class="pull-right mr">{{getValorBruto(orcamento) | currency:'R$ '}}</p>
+                                                </div>
+                                                <div  class="clearfix">
+                                                    <p  class="pull-left">Frete</p>
+                                                    <p  class="pull-right mr">{{orcamento?.Frete | currency:'R$ '}}</p>
+                                                </div>
+                                                <div  class="clearfix">
+                                                    <p  class="pull-left">Desconto</p>
+                                                    <p  class="pull-right mr">({{ ((orcamento?.Desconto * 100) / (getValorBruto(orcamento) + orcamento?.Frete)) }}%)</p>
+                                                    <p  class="pull-right mr">{{orcamento?.Desconto | currency:'R$ '}}</p>
+                                                </div>
+                                                <div  class="clearfix">
+                                                    <p  class="pull-left h3">VALOR TOTAL</p>
+                                                    <p  class="pull-right mr h3">{{orcamento?.ValorTotal | currency: 'R$ '}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr  class="hidden-print">
+                                        <div  class="clearfix">
+                                            <button  class="btn btn-info pull-left mr" type="button">Editar</button>
+                                            <button  class="btn btn-default pull-left" (click)="reciboModal.show()" type="button">Imprimir Recibo</button>
+                                            <button *ngIf="orcamento?.Status === 'Aguardando confirmação'" (click)="confirmarOrcamento(orcamento)" class="btn btn-success pull-right" type="button">
+                                                <span >
+                                                    <i class="fa fa-check fa-fw"></i>
+                                                    Confirmar orçamento
+                                                </span>
+                                            </button>
+                                            <button *ngIf="orcamento?.Status === 'Aguardando entrega'" (click)="atualizaStatus(orcamento)" class="btn btn-success pull-right" type="button">
+                                                <span>
+                                                    <i class="fa fa-truck fa-fw"></i>
+                                                    Confirmar entrega
+                                                </span>
+                                            </button>
+                                            <button *ngIf="orcamento?.Status === 'Aguardando recebimento'" (click)="atualizaStatus(orcamento)" class="btn btn-success pull-right" type="button">
+                                                <span>
+                                                    <i class="fa fa-truck fa-fw"></i>
+                                                    Confirmar recebimento
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab>
+                            <ng-template tabHeading>
+                                <em class="fa fa-dollar fa-fw"></em> Pagamentos
+                            </ng-template>
+                            <div>
+                                <div class="table-responsive">
+                                    <div style="padding: 2rem;">
+                                        <app-modal-pagamento (atualizarOrcamento)="getOrcamento()" [orcamento]="orcamento" [modal]="pagamentoModal"></app-modal-pagamento>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+<!-- Modal do Recibo -->
+<div id="reciboModal" class="modal fade" bsModal #reciboModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content print-content">
+                <div style="margin: 20px;" class="modal-body">
+                    <div class="row">
+                        <div style="font-size: 8px;" class="col-md-4 col-sm-4 col-xs-4">
+                            <img width="100px" height="50px" src="assets/img/logo.png" alt="App Logo" />
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4 text-center">
+                            <h1>RECIBO</h1>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <input style="font-size: 25px;" class="form-control input-lg" value="{{orcamento?.ValorTotal | currency: 'R$ '}}" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr>
+                            <div style="margin-top: 20px;" class="row">
+                                <div style="font-size: 18px; vertical-align: middle;" class="col-md-3 col-xs-3">
+                                    <h4 class="text-muted">Recebi de: </h4>
+                                </div>
+                                <div style="font-size: 18px; vertical-align: middle;" class="col-md-9 col-xs-9">
+                                    <h4>{{orcamento?.Cliente?.Pessoa?.Nome | uppercase}}</h4>
+                                </div>
+                            </div>
+                            <hr>
+                            <div style="margin-top: 20px;" class="row">
+                                <div style="font-size: 18px; vertical-align: middle;" class="col-md-3 col-xs-3">
+                                    <h4 class="text-muted">A quantia de: </h4>
+                                </div>
+                                <div style="font-size: 18px; vertical-align: middle;" class="col-md-9 col-xs-9">
+                                    <h4>{{orcamento?.ValorTotal | currency:'R$ '}}</h4>
+                                </div>
+                            </div>
+                            <hr>
+                            <div style="margin-top: 20px;" class="row">
+                                <div style="font-size: 18px; vertical-align: middle;" class="col-md-3 col-xs-3">
+                                    <h4 class="text-muted">Referente a: </h4>
+                                </div>
+                                <div style="font-size: 18px; vertical-align: middle;" class="col-md-9 col-xs-9">
+                                    <h4 *ngFor="let produto of orcamento.OrcamentoProduto">{{produto.Produto.Nome | uppercase}} </h4>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            E para clareza firmo o presente.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="font-size: 18px;" class="col-md-12">
+                            Em FORTALEZA,
+                            <span class="text-uppercase" format="D" now=""></span>
+                            de
+                            <span class="text-uppercase" format="MMMM" now=""></span>
+                            de
+                            <span class="text-uppercase" format="YYYY" now=""></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="window.print()">Imprimir</button>
+                    </div>
+            </div>
+        </div>
+</div>

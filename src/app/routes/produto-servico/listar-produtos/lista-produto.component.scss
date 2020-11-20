@@ -1,0 +1,81 @@
+/* Esconde o input */
+input[type='file'] {
+    display: none
+  }
+  
+  /* Aparência que terá o seletor de arquivo */
+  #label-arquivo {
+    background-color: #3498db;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    margin: 10px;
+    padding: 6px 20px;
+  }
+
+  i#changeTable {
+    cursor: pointer;
+  }
+  
+  i#changeTable:hover{
+    color: blue;
+  }
+  
+  .mb-2 {
+    margin-bottom: 2rem;
+  }
+  
+  .input-group-addon{
+    cursor: pointer;
+  }
+
+  /* Esconde o input */
+input[type='file'] {
+  display: none
+}
+
+/* Aparência que terá o seletor de arquivo */
+#label-arquivo {
+background-color: #3498db;
+border-radius: 5px;
+color: #fff;
+cursor: pointer;
+margin: 10px;
+padding: 6px 20px;
+}
+
+.btn-img {
+border: 2px dashed #8c8383;
+background-color: #eeeeee;
+}
+
+#timelineProfilePic {
+position: relative;
+width: 100%;
+border: 2px dashed #8c8383;
+background-color: #eeeeee;
+cursor: pointer;
+}
+
+.paddingCenter {
+// padding: 18% 10%;
+padding: 1rem 1rem;
+height: 200px;
+}
+
+.img-upload {
+width: 70%;
+height: 100%;
+text-align: center;
+font-size: 18px;
+margin: auto;
+padding: 25px 0;
+}
+
+img {
+vertical-align: middle;
+border-style: none;
+width: 50%;
+margin: auto;
+}
+  

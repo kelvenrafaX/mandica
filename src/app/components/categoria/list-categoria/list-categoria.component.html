@@ -1,0 +1,114 @@
+<div *ngIf="loading" class="loader-demo col-md-12" style="margin-top: 5rem;">
+  <div class="ball-clip-rotate-multiple">
+    <div></div>
+    <div></div>
+  </div>
+  <div style="margin-left: 2rem;">
+    Carregando...
+  </div>
+</div>
+
+<div class="col-md-12 text-muted text-center" style="margin-top:1rem;"
+    *ngIf="!loading && categorias != undefined && categorias.length <= 0">
+    <h3>Nenhuma categoria cadastrada!</h3>
+</div>
+
+<div class="treeview js-treeview">
+    <ul *ngFor="let item of categorias">
+      <li>
+        <div class="treeview__level" data-level="A">
+          <span class="level-title">{{item.Descricao}}</span>
+          <div class="treeview__level-btns">
+            <div (click)="addDisableAll(); item.Add = !item.Add;" class="btn btn-default btn-sm level-add" style="margin-right: 2px;"><span class="fa fa-plus"></span></div>
+            <div class="level-sub input-group" style="width: 500px;" [style.display]="item.Add ? 'inline-block' : 'none'">
+                <input [(ngModel)]="addDescricao" type="text" class="btn form-control" style="width: auto !important; height: 100%;" >
+                <button (click)="addCategoria(item.Id)" class="btn btn-default btn-sm input-group-append">
+                    <span class="input-group-text fa fa-check text-green"></span>
+                </button>
+            </div>
+          </div>
+        </div>
+        <ul>
+          <li *ngFor="let nivel1 of item.categoriasFilhas">
+            <div class="treeview__level" data-level="B">
+              <span *ngIf="!nivel1.Edit" class="level-title">{{nivel1.Descricao}}</span>
+              <div *ngIf="nivel1.Edit" class="level-title input-group" style="width: auto !important; display: inline-block;">
+                <input class="form-control" [(ngModel)]="nivel1.Descricao" style="width: auto !important; height: 100%;" />
+                <button (click)="editCategoria(nivel1)" class="btn btn-default btn-sm input-group-append">
+                    <span class="input-group-text fa fa-check text-green"></span>
+                </button>
+              </div>
+              <div class="treeview__level-btns">
+                <div (click)="addDisableAll(); nivel1.Add = !nivel1.Add;" class="btn btn-default btn-sm level-add" style="margin-right: 2px;"><span class="fa fa-plus"></span></div>
+                <div (click)="addDisableAll(); nivel1.Edit = !nivel1.Edit;" class="btn btn-default btn-sm level-add" style="margin-right: 2px;"><span class="fa fa-edit text-primary"></span></div>
+                <div (click)="deleteCategoria(nivel1)" class="btn btn-default btn-sm level-add" style="margin-right: 2px;"><span class="fa fa-times text-danger"></span></div>
+                <div class="level-sub input-group" style="width: 500px;" [style.display]="nivel1.Add ? 'inline-block' : 'none'">
+                    <input [(ngModel)]="addDescricao" type="text" class="btn form-control" style="width: auto !important; height: 100%;" >
+                    <button (click)="addCategoria(nivel1.Id)" class="btn btn-default btn-sm input-group-append">
+                        <span class="input-group-text fa fa-check text-green"></span>
+                    </button>
+                </div>
+              </div>
+            </div>
+            <ul>
+              <li *ngFor="let nivel2 of nivel1.categoriasFilhas">
+                <div class="treeview__level" data-level="C">
+                    <span *ngIf="!nivel2.Edit" class="level-title">{{nivel2.Descricao}}</span>
+                    <div *ngIf="nivel2.Edit" class="level-title input-group" style="width: auto !important; display: inline-block;">
+                      <input class="form-control" [(ngModel)]="nivel2.Descricao" style="width: auto !important; height: 100%;" />
+                      <button (click)="editCategoria(nivel2)" class="btn btn-default btn-sm input-group-append">
+                          <span class="input-group-text fa fa-check text-green"></span>
+                      </button>
+                    </div>
+                  <div class="treeview__level-btns">
+                    <div (click)="addDisableAll(); nivel2.Add = !nivel2.Add;" class="btn btn-default btn-sm level-add" style="margin-right: 2px;"><span class="fa fa-plus"></span></div>
+                    <div (click)="addDisableAll(); nivel2.Edit = !nivel2.Edit;" class="btn btn-default btn-sm level-add" style="margin-right: 2px;"><span class="fa fa-edit text-primary"></span></div>
+                    <div  (click)="deleteCategoria(nivel2)" class="btn btn-default btn-sm level-add" style="margin-right: 2px;"><span class="fa fa-times text-danger"></span></div>
+                    <div class="level-sub input-group" style="width: 500px;" [style.display]="nivel2.Add ? 'inline-block' : 'none'">
+                        <input [(ngModel)]="addDescricao" type="text" class="btn form-control" style="width: auto !important; height: 100%;" >
+                        <button (click)="addCategoria(nivel2.Id)" class="btn btn-default btn-sm input-group-append">
+                            <span class="input-group-text fa fa-check text-green"></span>
+                        </button>
+                    </div>
+                  </div>
+                </div>
+                <ul>
+                  <li *ngFor="let nivel3 of nivel2.categoriasFilhas">
+                    <div class="treeview__level" data-level="D">
+                      <span *ngIf="!nivel3.Edit" class="level-title">{{nivel3.Descricao}}</span>
+                      <div *ngIf="nivel3.Edit" class="level-title input-group" style="width: auto !important; display: inline-block;">
+                          <input class="form-control" [(ngModel)]="nivel3.Descricao" style="width: auto !important; height: 100%;" />
+                          <button (click)="editCategoria(nivel3)" class="btn btn-default btn-sm input-group-append">
+                              <span class="input-group-text fa fa-check text-green"></span>
+                          </button>
+                      </div>
+                      <div class="treeview__level-btns">
+                        <div (click)="addDisableAll(); nivel3.Edit = !nivel3.Edit;" class="btn btn-default btn-sm level-add" style="margin-right: 2px;"><span class="fa fa-edit text-primary"></span></div>
+                        <div (click)="deleteCategoria(nivel3)" class="btn btn-default btn-sm level-add" style="margin-right: 2px;"><span class="fa fa-times text-danger"></span></div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+</div>
+  
+<template id="levelMarkup">
+    <li>
+    <div class="treeview__level" data-level="A">
+        <span class="level-title">Level A</span>
+        <div class="treeview__level-btns">
+        <div class="btn btn-default btn-sm level-add"><span class="fa fa-plus"></span></div>
+        <div class="btn btn-default btn-sm level-remove"><span class="fa fa-trash text-danger"></span></div>
+        <div class="btn btn-default btn-sm level-same"><span>Add Same Level</span></div>
+        <div class="btn btn-default btn-sm level-sub"><span>Add Sub Level</span></div>
+        </div>
+    </div>
+    <ul>
+    </ul>
+</li>
+</template>

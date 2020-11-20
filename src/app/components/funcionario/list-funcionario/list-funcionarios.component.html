@@ -1,0 +1,37 @@
+<div class="panel b" style="padding: 13px;">
+    <small> Filtros </small>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6"> <input (keyup)="filter()" [(ngModel)]="filtro.Nome" type="text" class="form-control" placeholder="Buscar por Nome" /> </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6"> <input (keyup)="filter()" [(ngModel)]="filtro.CpfCnpj" type="text" class="form-control" placeholder="Buscar por Cpf/Cnpj" /> </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"> <input (keyup)="filter()" [(ngModel)]="filtro.Celular" type="text" class="form-control" placeholder="Buscar por Celular" /> </div>
+    </div>
+  </div>
+  <div class="panel b" style="padding: 13px;">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF/CNPJ</th>
+                <th>Telefone</th>
+                <th>Celular</th>
+                <th>Email</th>
+                <th *ngIf="!controleAcesso">Editar</th>
+                <th *ngIf="!controleAcesso">Excluir</th>
+    
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let funcionario of funcionarios">
+                <td>{{funcionario.Pessoa.Nome}}</td>
+                <td>{{funcionario.Pessoa.Cpf | mask: '000.000.000-00'}} {{funcionario.Pessoa.Cnpj | mask: '00.000.000/0000-00'}}</td>
+                <td>{{funcionario.Pessoa.Telefone | mask: '(00) 0000-0000'}}</td>
+                <td>{{funcionario.Pessoa.Celular | mask: '(00) 00000-0000'}}</td>
+                <td>{{funcionario.Pessoa.Email}}</td>
+                <td *ngIf="!controleAcesso"><button (click)="eventEdit.emit(funcionario)" class="btn btn-primary"><i  class="icon-pencil edit"></i></button></td>
+                <td *ngIf="!controleAcesso"><button (click)="remove(funcionario)" class="btn btn-danger"><i  class="fa fa-close remove"></i></button></td>
+                <td *ngIf="controleAcesso"><button (click)="eventControleAcesso.emit(funcionario)" class="btn btn-primary">Controle Acesso</button></td>
+            </tr>
+            <tr *ngIf="funcionarios.length <= 0" class="alert alert-info"> <td colspan="7"> Nenhum funcionário cadastrado! </td> </tr>
+        </tbody>
+    </table>
+  </div>

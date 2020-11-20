@@ -1,0 +1,58 @@
+<div style="padding: 12px !important; font-size: 17px !important;" class="content-heading">
+    Cadastro de Categorias
+</div>
+<!-- START panel tab-->
+<div class="panel">
+    <tabset class="bg-white p0" [justified]="true">
+        <tab>
+            <ng-template tabHeading>
+                <em class="icon-social-dropbox fa-fw"></em> Estoque
+            </ng-template>
+            <div>
+            <!-- START list group-->
+            <div class="list-group mb0">
+                <div class="container">
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3rem;">
+                        <app-list-categoria [loading]="loading" (eventEdit)="eventEdit($event)" (eventAtt)="refresh()" [categorias]="categorias"></app-list-categoria>
+                    </div>
+                </div>
+            </div>
+            <!-- END list group-->
+            <!-- <div class="panel-footer text-right"><a class="btn btn-default btn-sm" href="#">View All Categorias </a> -->
+            <!-- </div> -->
+            </div>
+        </tab>
+        <tab>
+            <ng-template tabHeading>
+                <em class="icon-wallet fa-fw"></em> Financeiro
+            </ng-template>
+            <div>
+                <!-- START table responsive-->
+                <div class="table-responsive">
+                </div>
+                <!-- END table responsive-->
+                <!-- <div class="panel-footer text-right"><a class="btn btn-default btn-sm" href="#">View All Receitas</a> -->
+                <!-- </div> -->
+            </div>
+        </tab>
+    </tabset>
+</div>
+<!-- END panel tab-->
+<!-- <div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-horizontal" >
+            <div class="form-group">
+                <div class="col-md-12">
+                  <div class="row">
+                    <app-add-categoria (eventAdd)="eventAdd($event)" [categorias]="categorias"></app-add-categoria>
+                  </div>          
+                </div>    
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <app-list-categoria [loading]="loading" (eventEdit)="eventEdit($event)" [categorias]="categorias"></app-list-categoria>
+            </div>
+        </div>
+    </div>
+</div> -->

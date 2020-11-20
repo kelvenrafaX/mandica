@@ -1,0 +1,101 @@
+<div class="content-heading">
+    Dashboard
+</div>
+<div class="row">
+    <div class="col-lg-3 col-sm-6">
+        <a href="#" routerLink="/operacional/consultar" class="no-under">
+            <div class="panel widget bg-primary">
+                <div class="row row-table">
+                    <div class="col-xs-4 text-center bg-primary-dark pv-lg">
+                        <em class="fa fa-truck fa-3x"></em>
+                    </div>
+                    <div class="col-xs-8 pv-lg">
+                        <div class="h2 mt0">{{qtdPedidos}}</div>
+                        <div class="text-uppercase">Locações Concluídas</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-lg-3 col-sm-6">
+        <a href="#" routerLink="/operacional/consultar" class="no-under">
+            <div class="panel widget bg-purple">
+                <div class="row row-table">
+                    <div class="col-xs-4 text-center bg-purple-dark pv-lg">
+                        <em class="icon-user-follow fa-3x"></em>
+                    </div>
+                    <div class="col-xs-8 pv-lg">
+                        <div class="h2 mt0">{{qtdClientes}}</div>
+                        <div class="text-uppercase">Clientes Cadastrados</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-lg-3 col-sm-6">
+        <a href="#" routerLink="/operacional/consultar" class="no-under">
+            <div class="panel widget bg-green">
+                <div class="row row-table">
+                    <div class="col-xs-4 text-center bg-green-dark pv-lg">
+                        <em class="icon-social-dropbox fa-3x"></em>
+                    </div>
+                    <div class="col-xs-8 pv-lg">
+                        <div class="h2 mt0">{{qtdEstoque}}</div>
+                        <div class="text-uppercase">Produtos em Estoque</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-lg-3 col-sm-6">
+        <a href="#" routerLink="/operacional/consultar" class="no-under">
+            <div class="panel widget bg-danger">
+                <div class="row row-table">
+                    <div class="col-xs-4 text-center bg-danger-dark pv-lg">
+                        <em class="fa fa-exclamation fa-3x"></em>
+                    </div>
+                    <div class="col-xs-8 pv-lg">
+                        <div class="h2 mt0">{{qtdParcelasPendentes}}</div>
+                        <div class="text-uppercase">Parcelas Pendentes</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="calendar-app">
+    <div class="row">
+        <div class="col-lg-3 col-md-4">
+            <!-- START panel-->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <!--<div *ngIf="selectedEvent">
+                        <p>{{selectedEvent.orcamento.TipoPedido}}</p>
+                        <p>Nº: {{selectedEvent.orcamento.Id}}</p>
+                        <p>Cliente: {{selectedEvent.orcamento.Cliente.Pessoa.Nome | uppercase}}</p>
+                        <p>Data Entrega: {{selectedEvent.orcamento.DataEntrega | date:'dd/MM/yyyy'}}</p>
+                        <p>Valor Total: {{selectedEvent.orcamento.ValorTotal | currency:'R$ '}}</p>
+                        <p>Status: {{selectedEvent.orcamento.Status}}</p>
+                        <p>Dias restantes: {{selectedEvent.orcamento.DiasRestantes | number:'1.0-0'}}</p>
+                    </div>
+                    <div *ngIf="!selectedEvent">
+                        <h4 class="text-muted">Clique em um orçamento para ver os detalhes!</h4>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">Calendar</div>
+                <div class="panel-body">
+                    <!-- START calendar-->
+                    <div #fullcalendar class="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+
+<div style="padding: 12px !important; font-size: 17px !important;" class="content-heading">
+  Cadastro de Cargos
+</div>
+
+<div class="panel b" style="padding: 13px;">
+  <div class="row">
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+      <label for="forma-de-pagamento">Descrição do Cargo</label>
+      <input [(ngModel)]="cargo.Descricao" type="text" placeholder="Descrição" name="cargo-descricao" class="form-control"/>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+      <label for=""></label>
+      <button (click)="gerarCargo()" class="btn btn-success btn-block"><i class="fa fa-plus fa-fw"></i> {{nameButton}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="panel b" style="padding: 13px;">
+  <table class="table table-hover">
+      <thead>
+          <tr>
+              <th>Descrição</th>
+              <th>Ativar/Desativar</th>
+              <th>Editar</th>
+            </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let cargo of cargos">
+              <td>{{cargo.Descricao}}</td>
+              <td><button (click)="mudarStatus(cargo)" class="btn {{cargo.Ativa?'btn-danger':'btn-success'}} btn-block">{{cargo.Ativa?'Desativar':'Ativar'}}</button></td>
+              <td><button (click)="editarCargo(cargo)" class="btn btn-primary"><i  class="icon-pencil edit"></i></button></td>
+          </tr>
+          <tr *ngIf="cargos.length <= 0" class="alert alert-info"> <td colspan="3"> Nenhum cargo cadastrado </td> </tr>
+      </tbody>
+  </table>
+</div>

@@ -1,0 +1,18 @@
+<div class="row">
+  <div *ngFor="let menu of menus"
+       (click)="onSelect(menu)"
+       class="col-lg-3 col-md-6 col-sm-12">
+    <a class="no-under">
+      <div class="panel widget {{menu.background}}" [ngClass]="{'selected': menu === selectedMenu}">
+          <div class="row row-table">
+              <div class="col-xs-4 text-center {{menu.background}}-dark pv-lg">
+                  <em class="{{menu.icon}} fa-3x"></em>
+              </div>
+              <div class="col-xs-8 pv-lg">
+                  <div class="f-21"><b>{{menu.name}}</b></div>
+              </div>
+          </div>
+      </div>
+    </a>
+  </div>
+</div>

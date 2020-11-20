@@ -1,0 +1,142 @@
+<div class="row">
+  <div class="col-sm-12">      
+      <form (ngSubmit)="onSubmit()" [formGroup]="form" class="form-horizontal" role="form">
+        <div class="form-group">
+          <div class="col-md-12">
+            <div formGroupName="Pessoa" class="row">
+              <div class="col-md-4">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label>Tipo de Pessoa <span style="color:red">*</span></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <label class="radio-inline c-radio">
+                      <input id="pf" type="radio" formControlName="TipoPessoa" value="pf" [(ngModel)]="tipoPessoa" checked />
+                      <span class="fa fa-circle"></span> Pessoa Física
+                    </label>
+                    <label class="radio-inline c-radio">
+                      <input id="pj" type="radio" formControlName="TipoPessoa" value="pj" [(ngModel)]="tipoPessoa" />
+                      <span class="fa fa-circle"></span> Pessoa Jurídica
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label>Sexo <span style="color:red">*</span></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <label class="radio-inline c-radio">
+                      <input id="masculino" type="radio" formControlName="SiglaSexo" value="M" />
+                      <span class="fa fa-circle"></span> Masculino
+                    </label>
+                    <label class="radio-inline c-radio">
+                      <input id="viuvo" type="radio" formControlName="SiglaSexo" value="F" />
+                      <span class="fa fa-circle"></span> Feminino
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" formGroupName="Pessoa">
+          <div class="col-md-12">
+            <div *ngIf="tipoPessoa === 'pj'" class="row">
+              <div class="col-md-4">
+                <label>Razão Social<span style="color:red">*</span> </label>
+                <input id="RazaoSocial" formControlName="RazaoSocial" class="form-control" type="text" placeholder="Razão Social"
+                  required />
+                <div *ngIf="RazaoSocial.invalid && (RazaoSocial.dirty || RazaoSocial.touched)" style="color:red">
+                  <div *ngIf="RazaoSocial.errors.required">
+                    Campo obrigatório.
+                  </div>
+                  <div *ngIf="RazaoSocial.errors.minlength">
+                    O campo deve ter pelo menos 4 caracteres.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Cnpj <span style="color:red">*</span></label>
+                <input id="Cnpj" (change)="validCpfCnpj()" [textMask]="{mask: mask.maskCnpj}" formControlName="Cnpj" class="form-control" type="text" placeholder='Cnpj'
+                />
+                <div *ngIf="cpfCnpjExists.Type !== 'success'" style="color:red">
+                    {{cpfCnpjExists.Message}}
+                </div>
+                <div *ngIf="Cnpj.invalid && (Cnpj.dirty || Cnpj.touched)" style="color:red">
+                  <div *ngIf="Cnpj.errors.required">
+                    Campo obrigatório.
+                  </div>
+                  <div *ngIf="Cnpj.errors.minlength">
+                    O campo deve ter pelo menos 14 caracteres.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Celular <span style="color:red">*</span></label>
+                <input [textMask]="{mask: mask.maskCelular}" formControlName="Celular" class="form-control" type="text" placeholder="Celular" />
+                <div *ngIf="Celular.invalid && (Celular.dirty || Celular.touched)" style="color:red">
+                  <div *ngIf="Celular.errors.required">
+                    Campo obrigatório.
+                  </div>
+                  <div *ngIf="Celular.errors.pattern">
+                    Digite um número válido.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="tipoPessoa === 'pf'" class="row">
+              <div class="col-md-4">
+                <label>Nome<span style="color:red">*</span> </label>
+                <input id="Nome" formControlName="Nome" class="form-control" type="text" placeholder="Nome"
+                  required />
+                <div *ngIf="Nome.invalid && (Nome.dirty || Nome.touched)" style="color:red">
+                  <div *ngIf="Nome.errors.required">
+                    Campo obrigatório.
+                  </div>
+                  <div *ngIf="Nome.errors.minlength">
+                    O campo deve ter pelo menos 4 caracteres.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>CPF<span style="color:red">*</span></label>
+                <input id="Cpf" (change)="validCpfCnpj()" [textMask]="{mask: mask.maskCpf}" formControlName="Cpf" class="form-control" type="text" placeholder='CPF'
+                />
+                <div *ngIf="cpfCnpjExists.Type !== 'success'" style="color:red">
+                    {{cpfCnpjExists.Message}}
+                </div>
+                <div *ngIf="Cpf.invalid && (Cpf.dirty || Cpf.touched)" style="color:red">
+                  <div *ngIf="Cpf.errors.required">
+                    Campo obrigatório.
+                  </div>
+                  <div *ngIf="Cpf.errors.minlength">
+                    O campo deve ter pelo menos 8 caracteres.
+                  </div>
+                </div>
+              </div>  
+              <div class="col-md-4">
+                <label>Celular <span style="color:red">*</span></label>
+                <input [textMask]="{mask: mask.maskCelular}" formControlName="Celular" class="form-control" type="text" placeholder="Celular" />
+                <div *ngIf="Celular.invalid && (Celular.dirty || Celular.touched)" style="color:red">
+                  <div *ngIf="Celular.errors.required">
+                    Campo obrigatório.
+                  </div>
+                  <div *ngIf="Celular.errors.pattern">
+                    Digite um número válido.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button *ngIf="tipoPessoa === 'pf'" [disabled]="!validCadastroPf()" class="btn btn-sm btn-success" type="submit">Cadastrar</button>
+        <button *ngIf="tipoPessoa === 'pj'" [disabled]="!validCadastroPj()" class="btn btn-sm btn-success" type="submit">Cadastrar</button>
+      </form>
+  </div>
+</div>

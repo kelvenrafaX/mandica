@@ -1,0 +1,36 @@
+<div style="margin-bottom: 20px;" class="row">
+        <div class="col-md-3">
+            <input (keyup)="getClientes()" [(ngModel)]="filtro.Nome" class="form-control" type="text" placeholder="Pesquisar Nome">
+        </div>
+        <div class="col-md-3">
+            <input (keyup)="getClientes()" [(ngModel)]="filtro.Celular" class="form-control" type="text" placeholder="Pesquisar Celular">
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="list-group">
+            <div *ngIf="clientes.length <= 0" class="alert alert-danger">Nenhum cliente cadastrado!</div>
+            <!-- START User status-->
+            <a *ngFor="let cliente of clientes; let i = index" (click)="check(i)" class="media p mt0 list-group-item" href="#">
+                <span class="pull-right">
+                    <div class="radio c-radio">
+                        <label>
+                            <input id="chk-guest" type="radio" name="checkout-ship" [checked]="checked === i" [value]="cliente.Id" />
+                            <span class="fa fa-check"></span>
+                        </label>
+                    </div>
+                </span>
+                <span class="pull-left">
+                    <!-- Contact avatar-->
+                    <img class="media-object img-circle thumb32" [src]="clienteService.getUrlImagem(cliente)" alt="Image" />
+                </span>
+                <!-- Contact info-->
+                <span class="media-body">
+                    <span class="media-heading">
+                        <strong>{{cliente.Pessoa.Nome | uppercase}}</strong>
+                        <br/>
+                        <small class="text-muted">CPF: {{cliente.Pessoa.Cpf}}</small>
+                    </span>
+                </span>
+            </a>
+        </div>
+    </div>

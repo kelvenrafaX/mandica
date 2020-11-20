@@ -1,0 +1,33 @@
+<label>{{Title}}</label>
+<div class="row">
+    <div class="col-md-9" style="padding-right: 0px">
+        <ng-select #Select [allowClear]="true" [disabled]="false" (keyup)="onKey($event)"
+        [multiple]="multiple" [active]="active"
+        (selected)="selected($event)" placeholder="Selecione um(a) {{Title}}">
+        </ng-select>
+    </div>
+    <div class="col-md-3" style="padding-left: 10px">
+        <button type="button" class="btn btn-green" (click)="addCategoriaModal.show()"><i class="fa fa-plus fa-fw"></i></button>                                
+    </div>
+</div>
+
+<!-- Modal Add Categoria -->
+<div class="modal fade" bsModal #addCategoriaModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 90%; margin: 20px auto auto;" class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addCategoriaModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Categorias</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <app-list-categoria [loading]="loading" (eventAtt)="refreshCategoria()" [categorias]="categorias"></app-list-categoria>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

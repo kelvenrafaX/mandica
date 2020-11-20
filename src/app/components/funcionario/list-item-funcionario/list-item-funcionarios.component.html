@@ -1,0 +1,43 @@
+<div style="margin-bottom: 20px;" class="row">
+        <div class="col-md-3">
+            <input [(ngModel)]="filtro.Nome" class="form-control" type="text" placeholder="Pesquisar Nome">
+        </div>
+        <div class="col-md-3">
+            <input [(ngModel)]="filtro.Celular" class="form-control" type="text" placeholder="Pesquisar Celular">
+        </div>
+        <div class="col-md-2">
+            <button (click)="getFuncionarios()" class="btn btn-secundary"><i class="fa fa-search fa-fw"></i> Pesquisar</button>
+        </div>
+        <div class="col-md-2">
+            <i (click)="getFuncionarios()" class="fa fa-refresh fa-fw i-refresh fa-2x"></i>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="list-group">
+            <div *ngIf="funcionarios.length <= 0" class="alert alert-danger">Nenhum cliente cadastrado!</div>
+            <!-- START User status-->
+            <a *ngFor="let funcionario of funcionarios; let i = index" (click)="check(i)" class="media p mt0 list-group-item" href="#">
+                <span class="pull-right">
+                    <div class="radio c-radio">
+                        <label>
+                            <input id="chk-guest" type="radio" name="checkout-ship" [checked]="checked === i" [value]="cliente.Id" />
+                            <span class="fa fa-check"></span>
+                        </label>
+                    </div>
+                </span>
+                <span class="pull-left">
+                    <!-- Contact avatar-->
+                    <!-- <img class="media-object img-circle thumb32" [src]="clienteService.getUrlImagem(cliente)" alt="Image" /> -->
+                    <img class="media-object img-circle thumb32" src="" alt="Image" />
+                </span>
+                <!-- Contact info-->
+                <span class="media-body">
+                    <span class="media-heading">
+                        <strong>{{funcionario.Pessoa.Nome | uppercase}}</strong>
+                        <br/>
+                        <small class="text-muted">CPF: {{funcionario.Pessoa.CpfCnpj}}</small>
+                    </span>
+                </span>
+            </a>
+        </div>
+    </div>

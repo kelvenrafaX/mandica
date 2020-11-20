@@ -1,0 +1,92 @@
+<div class="row form-group">
+  <div class="col-md-8">
+      <div class="row form-group">
+          <div class="col-md-4">
+              <label>Forma de Pagamento</label>
+              <select [(ngModel)]="venda.NaturezaId" name="natureza" id="" (change)="selectParcelaPadrao()" class="form-control">
+                  <option value="0" selected> Selecione </option>
+                  <option *ngFor="let natureza of naturezas" value="{{natureza.Id}}">
+                      {{natureza.Descricao}}
+                  </option>
+              </select>
+          </div>
+          <div class="col-md-2">
+              <label>Qtd Parcelas</label>
+              <select [disabled]="venda.NaturezaId <= 0 || venda.NaturezaId == undefined"
+                  [(ngModel)]="venda.Plano" name="resumo-plano" id="" class="form-control">
+                  <option value="0" selected> Selecione </option>
+                  <option *ngFor="let parcelas of getParcelas(venda.NaturezaId)"
+                      value="{{parcelas.Parcela}}">
+                      {{parcelas.Parcela}}</option>
+              </select>
+          </div>
+          <div class="col-md-3">
+              <label>Valor</label>
+              <div class="col-md-12 input-group">
+                  <input name="resumo-valor" [(ngModel)]="venda.ValorParcela" class="form-control"
+                      type="text" placeholder="0,00" />
+                  <span class="input-group-addon">R$</span>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <label for="">ㅤ ㅤ</label>
+              <button (click)="addVenda(venda)" class="btn bg-green btn-block"> <i
+                      class="fa fa-plus fa-fw"></i> Adicionar </button>
+          </div>
+      </div>
+      <div class="row form-group">
+          <div class="col-md-12">
+              <table class="table table-striped table-bordered table-hover table-responsive">
+                  <thead>
+                      <tr>
+                          <th>Natureza</th>
+                          <th>Parcela</th>
+                          <th>Valor da Parcela</th>
+                          <th>Valor Pago</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let vendas of orcamento?.Venda">
+                          <td>{{vendas.Natureza.Descricao}}</td>
+                          <td>{{vendas.Parcela}}/{{vendas.Plano}}</td>
+                          <td>{{vendas.ValorParcela | currency: 'R$ '}}</td>
+                          <td>{{vendas.ValorPago | currency: 'R$ '}}</td>
+                      </tr>
+                      <tr *ngIf="orcamento?.Venda?.length > 0">
+                          <td colspan="2" class="text-bold">Total</td>
+                          <td class="text-bold">{{getTotalParcelas() | currency: 'R$ '}}</td>
+                          <td class="text-bold">{{getTotalParcelasPagas() | currency: 'R$ '}}</td>
+                      </tr>
+                      <tr *ngIf="orcamento?.Venda?.length === 0">
+                          <td colspan="4" class="h3 text-bold text-center">Nenhuma forma de pagamento
+                              inserida!</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+  <div class="col-md-4">
+      <div class="panel b">
+          <div class="panel-heading bb ">
+              <h4 class="panel-title">TOTAL PAGO</h4>
+          </div>
+          <div class="panel-body bt">
+              <h4 class="h2 b0 text-right" style="color: #8f89da;">
+                  {{getTotalParcelasPagas() | currency:"R$ "}}</h4>
+          </div>
+          <div class="panel-heading bb bt">
+              <h4 class="panel-title">RESTANTE</h4>
+          </div>
+          <div class="panel-body bt">
+              <h4 class="h2 b0 text-right" style="color: #e26f6f;">
+                  {{((orcamento.ValorTotal - getTotalParcelasPagas()) < 0 ? '0' : (orcamento.ValorTotal - getTotalParcelasPagas())) | currency:"R$ "}}</h4>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <button (click)="SalvarPagamentos()" class="btn bg-green"> <i class="fa fa-check fa-fw"></i> Salvar Pagamentos</button>
+  </div>
+</div>

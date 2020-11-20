@@ -1,0 +1,145 @@
+<!--
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Cliente</th>
+                            <th>Entrega</th>
+                            <th>Devolução</th>
+                            <th>Status</th>
+                            <th>Retirada</th>
+                            <th>Devolvida</th>
+                            <th>Frete</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let orcamento of orcamentos">
+                            <td>{{orcamento.Id}}</td>
+                            <td>{{orcamento.Cliente.Pessoa.Nome}}</td>
+                            <td>{{orcamento.DataEntrega | date : 'dd/MM/yyyy'}}</td>
+                            <td>{{orcamento.DataDevolucao | date : 'dd/MM/yyyy'}}</td>
+                            <td>{{orcamento.TipoPedido}}</td>
+                            <td>{{orcamento.TipoEntregaId === 1 && 'Na Loja' || 'Entrega'}}</td>
+                            <td>{{(orcamento.Devolvido === 0)  && 'Não' || 'Sim' }}</td>
+                            <td>{{orcamento.Frete}}</td>
+                            <td>{{valorTotal(orcamento)}}</td>
+                            <td>
+                                <div class="btn-group" dropdown>
+                                    <button class="btn btn-default btn-xs dropdown-toggle" type="button" dropdownToggle>
+                                        <em class="fa fa-angle-down fa-fw"></em>Ações</button>
+                                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                                        <li (click)="editOrcamento(orcamento)"><a href="#">Editar</a>
+                                        </li>
+                                        <li (click)="deleteOrcamento(orcamento)"><a href="#">Excluir</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> 
+-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Tipo</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="radio-inline c-radio">
+                                    <input [(ngModel)]="filtro.TipoPedido" (change)="getOrcamentos()" id="orc"
+                                        type="radio" value="Orçamento" checked />
+                                    <span class="fa fa-circle"></span> Orçamentos
+                                </label>
+                                <label class="radio-inline c-radio">
+                                    <input [(ngModel)]="filtro.TipoPedido" (change)="getOrcamentos()" id="ped"
+                                        type="radio" value="Pedido" />
+                                    <span class="fa fa-circle"></span> Pedidos
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Tipo</th>
+                                    <th>Valor</th>
+                                    <th>Realizado</th>
+                                    <th>{{filtro.TipoPedido == 'Pedido' ? 'Entrega' : 'Evento'}}</th>
+                                    <th>Status</th>
+                                    <th *ngIf="filtro.TipoPedido == 'Pedido'">Dias</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let orcamento of orcamentos">
+                                    <td>{{orcamento.Cliente.Pessoa.Nome | uppercase}}</td>
+                                    <td>{{orcamento.TipoPedido | uppercase}}</td>
+                                    <td>{{orcamento.ValorTotal | currency:'R$ '}}</td>
+                                    <td>{{orcamento.DataCadastro | date : 'dd/MM/yyyy'}}</td>
+                                    <td>{{(filtro.TipoPedido == 'Pedido' ? orcamento.DataEntrega : orcamento.DataEvento) | date : 'dd/MM/yyyy' }}</td>
+                                    <td class="text-center"><span class="label label-purple">{{orcamento.Status}}</span>
+                                    </td>
+                                    <td *ngIf="filtro.TipoPedido == 'Pedido'">
+                                        <span *ngIf="orcamento.DiasRestantes >= 1">Faltam
+                                            {{orcamento.DiasRestantes | number:'1.0-0'}} dias</span>
+                                        <span *ngIf="orcamento.DiasRestantes === 0">Hoje</span>
+                                        <span *ngIf="orcamento.DiasRestantes < 0">Atrasou
+                                            {{orcamento.DiasRestantes * -1 | number:'1.0-0'}} dias</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-info" style="margin-right: 5px;" (click)="eventSelect.emit(orcamento)"><i
+                                                class="fa fa-download fa-fw"></i></button>
+                                        <button class="btn btn-purple" style="margin-right: 5px;"
+                                            [routerLink]="['/pedidos/consultar-detalhe', orcamento.Id]"><i
+                                                class="fa fa-search fa-fw"></i></button>
+                                        <button class="btn bg-green" style="margin-right: 5px;"
+                                         (click)="confirmarOrcamento(orcamento)"><i
+                                                class="fa fa-edit fa-fw"></i></button>
+                                        <button class="btn btn-danger" style="margin-right: 5px;" (click)="captureScreen(orcamento)"><i
+                                                class="fa fa-times fa-fw"></i></button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="orcamentos.length === 0">
+                                    <td colspan="8" class="text-center h3"><strong>Nenhum registro encontrado!</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal do Pagamento -->
+<div id="pagamentoModal" class="modal fade" bsModal #pagamentoModal="bs-modal" tabindex="-1" role="dialog"
+    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <app-modal-pagamento (atualizarOrcamento)="getOrcamentos()" [orcamento]="orcamentoSelected"></app-modal-pagamento>
+</div>
+
+<div id="contentToConvert">
+    <app-pdf-orcamento [orcamento]="orcamentoSelected"></app-pdf-orcamento>
+</div>
+

@@ -1,0 +1,538 @@
+<div class="modal fade" bsModal #produtoSelectModal="bs-modal" tabindex="-1" role="dialog"
+    aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 70%; margin: 20px auto auto;" class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="produtoSelectModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Selecionar Produto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <tabset class="bg-white p0" [justified]="true">
+                            <tab>
+                                <ng-template tabHeading>
+                                    <em class="icon-tag fa-fw"></em>Acervo
+                                </ng-template>
+                                <div>
+                                    <div class="table-responsive">
+                                        <div style="padding: 2rem;">
+                                            <app-list-item-produtos tipo="0" (eventAdd)="SelecionarProduto($event)"></app-list-item-produtos>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab>
+                                <ng-template tabHeading>
+                                    <em class="icon-social-dropbox fa-fw"></em> Produto
+                                </ng-template>
+                                <div>
+                                    <div class="table-responsive">
+                                        <div style="padding: 2rem;">
+                                            <app-list-item-produtos tipo="1" (eventAdd)="SelecionarProduto($event)"></app-list-item-produtos>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab>
+                                <ng-template tabHeading>
+                                    <em class="icon-wrench fa-fw"></em> Serviço
+                                </ng-template>
+                                <div>
+                                    <div class="table-responsive">
+                                        <div style="padding: 2rem;">
+                                            <app-list-item-produtos tipo="2" (eventAdd)="SelecionarProduto($event)"></app-list-item-produtos>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" bsModal #clienteSelectModal="bs-modal" tabindex="-1" role="dialog"
+    aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 70%; margin: 20px auto auto;" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="clienteSelectModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Cadastro de Cliente</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <app-list-item-clientes (eventClienteSelecionado)="recebeClienteSelecionado($event)">
+                        </app-list-item-clientes>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" bsModal #formaPagamentoModal="bs-modal" tabindex="-1" role="dialog"
+    aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 90%; margin: 20px auto auto;" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="formaPagamentoModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Selecionar Forma de Pagamento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-group">
+                    <div class="col-md-8">
+                        <div style="margin-bottom: 50px;" class="row form-group">
+                            <div class="col-md-4">
+                                <label>Desconto</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input (keyup)="AtualizaDesconto('percentual')" name="resumo-desconto-percentual" [(ngModel)]="descontoPercentual" class="form-control"
+                                            type="text" placeholder="%" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input (keyup)="AtualizaDesconto('valor')" name="resumo-desconto" [(ngModel)]="desconto" class="form-control"
+                                            type="text" placeholder="R$ 0,00" />
+                                    </div>
+                                </div>
+                            </div>
+                            <span *ngIf="clienteSearch?.Pessoa?.Desconto > 0" style="color: rgb(207, 90, 90)"> 
+                                Este cliente possui desconto de {{ clienteSearch?.Pessoa?.Desconto/100 | percent }}
+                            </span>
+                            <div *ngIf="logistica.TipoEntregaId === 2" class="col-md-4">
+                                <label>Valor Frete</label>
+                                <div class="col-md-12 input-group">
+                                    <input name="resumo-entrega"
+                                        [(ngModel)]="entregaEstimada" class="form-control" type="text"
+                                        placeholder="R$ 0,00" />
+                                    <span class="input-group-addon">R$</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="">Entrada</label>
+                                <div class="col-md-12 input-group">
+                                    <input name="resumo-entrega"
+                                    [(ngModel)]="logistica.PercentualEntrada" class="form-control" type="text"
+                                        placeholder="%" />
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <label>Forma de Pagamento</label>
+                                <select [(ngModel)]="venda.NaturezaId" name="natureza" id="" (change)="selectParcelaPadrao()" class="form-control">
+                                    <option value="0" selected> Selecione </option>
+                                    <option *ngFor="let natureza of naturezas" value="{{natureza.Id}}">
+                                        {{natureza.Descricao}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Qtd Parcelas</label>
+                                <select [disabled]="venda.NaturezaId <= 0 || venda.NaturezaId == undefined"
+                                    [(ngModel)]="venda.Plano" name="resumo-plano" id="" class="form-control">
+                                    <option value="0" selected> Selecione </option>
+                                    <option *ngFor="let parcelas of getParcelas(venda.NaturezaId)"
+                                        value="{{parcelas.Parcela}}">
+                                        {{parcelas.Parcela}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Valor</label>
+                                <div class="col-md-12 input-group">
+                                    <input name="resumo-valor" [(ngModel)]="venda.ValorParcela" class="form-control"
+                                        type="text" placeholder="0,00" />
+                                    <span class="input-group-addon">R$</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">ㅤ ㅤ</label>
+                                <button (click)="addVenda(venda)" class="btn bg-green btn-block"> <i
+                                        class="fa fa-plus fa-fw"></i> Adicionar </button>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-bordered table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>Natureza</th>
+                                            <th>Valor da Parcela</th>
+                                            <th>Plano</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let vendas of logistica.Venda">
+                                            <td>{{vendas.Natureza.Descricao}}</td>
+                                            <td>{{vendas.ValorParcela | currency: 'R$ '}}</td>
+                                            <td>{{vendas.Plano}}</td>
+                                            <td>{{vendas.ValorParcela * vendas.Plano | currency: 'R$ '}}</td>
+                                        </tr>
+                                        <tr *ngIf="logistica.Venda.length > 0">
+                                            <td colspan="3" class="text-bold">Total</td>
+                                            <td class="text-bold">{{getTotalParcelas() | currency: 'R$ '}}</td>
+                                        </tr>
+                                        <tr *ngIf="logistica.Venda.length === 0">
+                                            <td colspan="4" class="h3 text-bold text-center">Nenhuma forma de pagamento
+                                                inserida!</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="pt clearfix">
+                            <div class="pull-left">
+                                <button (click)="finalizarPedido()" class="btn bg-green" type="button">Finalizar
+                                    Pedido</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel b">
+                            <div class="panel-heading bb ">
+                                <h4 class="panel-title">TOTAL A PAGAR</h4>
+                            </div>
+                            <div class="panel-body bt">
+                                <h4 class="h2 b0 text-right" style="color: #8f89da;">
+                                    {{atualizaValorTotalOrcamento() | currency:"R$ "}}</h4>
+                            </div>
+                            <div class="panel-heading bb bt">
+                                <h4 class="panel-title">RESTANTE</h4>
+                            </div>
+                            <div class="panel-body bt">
+                                <h4 class="h2 b0 text-right" style="color: #e26f6f;">
+                                    {{atualizaValorRestante() | currency:"R$ "}}</h4>
+                            </div>
+                            <div class="panel-heading bb bt">
+                                <h4 class="panel-title">TROCO</h4>
+                            </div>
+                            <div class="panel-body bt">
+                                <h4 class="h2 b0 text-right" style="color: #89daa1;">
+                                    {{atualizaValorTroco() | currency:"R$ "}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-9">
+
+        <!-- Datas -->
+        <div class="panel b">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3">
+                        <div class="form-group">
+                            <label>Data de Entrega*</label>
+                            <!-- <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker> -->
+                            <input #dataentrega autocomplete="off" placeholder="__/__/____"
+                                name="dataEntrega" [(ngModel)]="logistica.DataEntrega" class="form-control input-sm"
+                                type="date" required=""  />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <div class="form-group">
+                            <label>Horário da Entrega</label>
+                            <input name="horarioEntrega" [(ngModel)]="logistica.HorarioEntrega"
+                                class="form-control input-sm" type="time" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <div class="form-group">
+                            <label>Data de Devolução*</label>
+                            <input #datadevolucao autocomplete="off" placeholder="__/__/____" [min]="logistica.DataEntrega" [disabled]="!validDateEntrega()"
+                                name="dataDevolucao" [(ngModel)]="logistica.DataDevolucao" class="input-sm form-control" type="date"
+                                required="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <div class="form-group">
+                            <label>Horário da Devolução</label>
+                            <input name="horarioDevolucao" [(ngModel)]="logistica.HorarioDevolucao"
+                                class="form-control input-sm" type="time" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Adicionando Produtos -->
+        <div class="panel b">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="codigo-produto">Código</label>
+                        <div class="input-group">
+                            <input #inputCodigoProduto [(ngModel)]="codigoProduto" type="text" name="codigo-produto"
+                                class="form-control input-sm" (keyup)="CodProduto_KeyUp($event)">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-sm" (click)="produtoSelectModal.show()" type="button"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <app-select-produto [active]="getActiveProduto()" (eventSelected)="SelectedProduto($event)"></app-select-produto>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="unitario-produto">Unitário</label>
+                        <input disabled [(ngModel)]="produtoSearch.produto.ValorUnitarioLocacao" type="text"
+                            name="unitario-produto" class="form-control input-sm">
+                    </div>
+                    <div class="col-md-1">
+                        <label for="qtde-produto">Qtde</label>
+                        <input #inputQtdeProduto [(ngModel)]="produtoSearch.quantidade" type="text" name="qtde-produto"
+                            class="form-control input-sm" (keyup)="QtdProduto_KeyUp($event)">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="total-produto">Total</label>
+                        <input disabled
+                            value="{{produtoSearch.quantidade * produtoSearch.produto.ValorUnitarioLocacao | currency : 'R$ '}}"
+                            type="text" name="total-produto" class="form-control input-sm">
+                    </div>
+                    <div class="col-md-1">
+                        <label for="estoque-produto">Estoque</label>
+                        <input [value]="getEstoque(produtoSearch.produto)" disabled type="text" name="estoque-produto"
+                            class="form-control input-sm">
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 1rem;">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead class="bg-gray-lighter">
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th>Descrição</th>
+                                        <th>Unitário</th>
+                                        <th class="wd-xs">Qtde</th>
+                                        <th>Total</th>
+                                        <th class="wd-xs">Estoque</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="produtos.length === 0">
+                                        <td colspan="5">
+                                            <div class="text-center text-muted col-md-12">
+                                                <h4>Nenhum produto selecionado</h4>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let produto of produtos; let i = index">
+                                        <td class="order-pic thumb64">
+                                            <img width="100%" [src]="getUrlImagem(produto.produto)" />
+                                        </td>
+                                        <td class="order-item-name">{{produto.produto.Nome}}</td>
+                                        <td class="order-price">
+                                            {{produto.produto.ValorUnitarioLocacao | currency:"R$ "}}</td>
+                                        <td class="order-qty">
+                                            <input [max]="getEstoque(produto.produto)" min="0" class="form-control"
+                                                type="number" [name]="produto.produto.Id"
+                                                [(ngModel)]="produto.quantidade" />
+                                        </td>
+                                        <td class="order-total">
+                                            {{produto.produto.ValorUnitarioLocacao * produto.quantidade | currency:"R$ "}}
+                                        </td>
+                                        <td class="order-qty">
+                                            {{produto.produto.Terceiros ? 'De Terceiros' : getEstoque(produto.produto)}}
+                                        </td>
+                                        <td class="order-total text-center">
+                                            <button (click)="recebeRemoveProduto(produto)" class="btn btn-default">
+                                                <i class="fa fa-times fa-fw" style="color: red;"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cliente e Logística -->
+        <div class="panel b">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="codigo-cliente">Código do Cliente</label>
+                        <div class="input-group">
+                            <input #inputCodigoCliente [(ngModel)]="codigoCliente" type="text" name="codigo-cliente"
+                                class="form-control input-sm" (keyup)="CodCliente_KeyUp($event)">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-sm" (click)="clienteSelectModal.show()" type="button"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <app-select-cliente [active]="getActiveCliente()" (eventSelected)="recebeClienteSelecionado($event)"></app-select-cliente>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Tipo de Entrega</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="radio-inline c-radio">
+                                    <input (click)="setTipoEntrega(1)" [checked]="logistica.TipoEntregaId === 1"
+                                        name="tipoEntrega" id="naLoja" type="radio" value="1" />
+                                    <span class="fa fa-circle"></span> Na loja
+                                </label>
+                                <label class="radio-inline c-radio">
+                                    <input (click)="setTipoEntrega(2)" [checked]="logistica.TipoEntregaId === 2"
+                                        name="tipoEntrega" id="entrega" type="radio" value="2" />
+                                    <span class="fa fa-circle"></span> Entrega
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Data do Evento*</label>
+                            <input #dataevento [min]="logistica.DataEntrega" [max]="logistica.DataDevolucao" name="dataEvento"
+                                [(ngModel)]="logistica.DataEvento" class="form-control input-sm" type="date"
+                                required="" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Horário do Evento*</label>
+                            <input name="horarioEvento" [(ngModel)]="logistica.HorarioEvento"
+                                class="form-control input-sm" type="time" required="" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Diárias*</label>
+                            <input name="diarias" [(ngModel)]="logistica.Diarias" class="form-control input-sm"
+                                type="number" required="" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>CEP (Local do Evento)*</label>
+                            <input name="cep" [(ngModel)]="logistica.Entrega.Cep" class="form-control input-sm"
+                                type="text" required="" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Logradouro*</label>
+                            <input name="endereco" [(ngModel)]="logistica.Entrega.Rua" class="form-control input-sm"
+                                placeholder="Av, Rua, Travessa..." type="text" required="" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Bairro*</label>
+                            <input name="bairro" [(ngModel)]="logistica.Entrega.Bairro" class="form-control input-sm"
+                                type="text" required="" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Número*</label>
+                            <input name="numero" [(ngModel)]="logistica.Entrega.Numero" class="form-control input-sm"
+                                type="text" required="" />
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label>Observação</label>
+                            <textarea name="obs" [(ngModel)]="logistica.Obs" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Resumo -->
+    <div class="col-md-3">
+        <div class="panel b">
+            <div class="panel-heading bb">
+                <h4 class="panel-title">{{type}} Resumo</h4>
+            </div>
+            <div class="panel-body bt">
+                <h4 class="b0">{{type}} #{{lastId | codigo:7}}</h4>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Acervos</td>
+                        <td>
+                            <div class="text-right text-bold">{{atualizaValorTotalAcervo() | currency:"R$ "}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Produtos</td>
+                        <td>
+                            <div class="text-right text-bold">{{atualizaValorTotalProduto() | currency:"R$ "}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Serviços</td>
+                        <td>
+                            <div class="text-right text-bold">{{atualizaValorTotalServico() | currency:"R$ "}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Subtotal</td>
+                        <td>
+                            <div class="text-right text-bold">{{atualizaValorTotal() | currency:"R$ "}}</div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="logistica.TipoEntregaId === 2">
+                        <td>Frete estimado</td>
+                        <td>
+                            <div class="text-right text-bold">{{entregaEstimada | currency:"R$ "}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Desconto</td>
+                        <td>
+                            <div class="text-right text-bold">{{desconto | currency:"R$ "}}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="panel-body">
+                <div class="clearfix">
+                    <div class="pull-right text-right">
+                        <div class="text-bold">{{atualizaValorTotalOrcamento() | currency:"R$ "}}</div>
+                    </div>
+                    <div class="pull-left text-bold text-dark">TOTAL</div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <p>
+                    <button style="min-height: 100px;" [disabled]="!validaTudo()" (click)="checaFinalizacao()"
+                        class="btn btn-lg bg-green btn-block" type="button">FINALIZAR {{type | uppercase}}</button>
+                </p>
+                <small class="text-muted">* Para finalizar o {{type}}, você precisa finalizar todos os passos.</small>
+            </div>
+        </div>
+    </div>
+
+</div>

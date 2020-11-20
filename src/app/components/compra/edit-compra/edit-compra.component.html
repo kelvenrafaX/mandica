@@ -1,0 +1,67 @@
+<div class="modal fade" bsModal #produtoModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+  <div style="width: 70%; margin: 20px auto auto;" class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" aria-label="Close" (click)="produtoModal.hide()">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Cadastro de Produto</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-12">
+                      <app-add-produto (evenAdd)="eventAddProduto($event)"></app-add-produto>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="row">
+<div class="col-sm-12">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <form (ngSubmit)="onSubmit()" [formGroup]="form" class="form-horizontal" role="form">
+        <div class="form-group">
+          <div class="col-md-2">
+            <label>Nº Documento</label>
+            <input formControlName="NumDocumento" class="form-control" type="number" placeholder="Nº Documento" />
+          </div>
+          <div class="col-md-4">
+            <label>Produto <span style="color:red">*</span></label>
+            <div class="row">
+              <div class="col-md-10">
+                <select formControlName="ProdutoId" class="form-control">
+                  <option value="0" selected>Selecione</option>              
+                  <option *ngFor="let i of produtos" [value]="i.Id">{{i.Nome}}</option>              
+                </select>
+              </div>
+              <div class="col-md-2" style="padding-left: 0;">
+                <button (click)="produtoModal.show()" type="button" class="btn btn-success"><i class="fa fa-plus fa-fw"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+              <label>Fornecedor</label>
+              <select formControlName="FornecedorId" name="fornecedor" id="" class="form-control">
+                  <option value="0" selected> Selecione </option>
+                  <option *ngFor="let fornecedor of fornecedores" value="{{fornecedor.Id}}">{{fornecedor.Pessoa.Nome}}</option>
+              </select>
+          </div>
+          <div class="col-md-2">
+            <label>Quantidade</label>
+            <input min="0" formControlName="Quantidade" class="form-control" type="number" placeholder="Quantidade" />
+          </div>
+          <div class="col-md-2">
+            <label>Data da Compra</label>
+            <input [textMask]="{mask: mask.maskData}" formControlName="DataCompra" class="form-control" type="text" placeholder="Data da Compra" />
+          </div>
+        </div>
+        <button [disabled]="!validForm()" class="btn btn-sm btn-success" type="submit">Cadastrar</button>
+        <button class="btn btn-sm btn-danger" type="button" (click)="clearForm()">Limpar</button>  
+      </form>
+    </div>
+  </div>
+</div>
+</div>

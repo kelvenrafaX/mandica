@@ -1,0 +1,46 @@
+<div style="padding: 12px !important; font-size: 17px !important;" class="content-heading">
+    Cadastro de Clientes <button type="button" *ngIf="screen !== 'home'" (click)="changeScreen('home')" class="pull-right btn bg-green btn-xs"> <strong> Voltar </strong> </button>
+</div>
+  
+<!-- Home -->
+
+<div class="row" [hidden]="screen !== 'home'">
+    <div (click)="changeScreen('adicionar')" class="col-lg-3 col-md-3 col-sm-3">
+        <a class="no-under">
+        <div class="panel widget bg-green">
+            <div class="row row-table">
+                <div class="col-xs-3 text-center bg-green-dark pv-lg">
+                    <em class="fa fa-plus fa-2x"></em>
+                </div>
+                <div class="col-xs-9 pv-lg">
+                    <div style="font-size: 17px;"><b>Adicionar</b></div>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+
+    <app-list-clientes (filtrando)="filtrando($event)" (eventRemove)="clienteSelectedRemove($event)" (eventEdit)="clienteSelectedEdit($event)" [clientes]="clientes"></app-list-clientes>
+</div>
+
+<!-- End Home -->
+
+<!-- Adicionar -->
+
+<div class="row" [hidden]="screen !== 'adicionar'">
+
+    <app-add-cliente (ChangeScreen)="changeScreen($event)" (eventAdd)="addCliente($event)"></app-add-cliente>
+
+</div>
+
+<!-- End Adicionar -->
+
+<!-- Editar -->
+
+<div class="row" [hidden]="screen !== 'editar'">
+
+    <app-edit-cliente #editClienteComponent (eventEdit)="editCliente($event)" (ChangeScreen)="changeScreen($event)"></app-edit-cliente>
+
+</div>
+
+<!-- End Editar -->

@@ -1,0 +1,87 @@
+<!--<div *ngIf="compras.length === 0" class="list-group">
+  <a class="list-group-item" href="#">
+    <table class="wd-wide">
+      <tbody>
+        <tr>
+          <td>
+            <div class="ph text-center">
+              <h4 class="media-box-heading text-muted">Nenhuma compra cadastrada no momento!</h4>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </a>
+</div>
+<div *ngFor="let i of compras" class="list-group">
+  <a class="list-group-item" href="#">
+    <table class="wd-wide">
+      <tbody>
+        <tr>
+          <td class="wd-xs">
+            <div class="ph">
+              <img alt="" class="media-box-object img-responsive img-rounded thumb64" [src]="getUrlImagem(i.Produto)">
+            </div>
+          </td>
+          <td>
+            <div class="ph">
+                <h4 class="media-box-heading">{{i.Produto.Nome}}</h4>
+                <small class="text-muted">Data da Compra: {{i.DataCompra | date : 'dd/MM/yyyy'}}</small>
+            </div>
+          </td>
+          
+          <td class="wd-xs hidden-xs hidden-sm">
+            <div class="ph">
+                <p class="m0 text-muted">
+                <em class="icon-basket-loaded mr fa-lg"></em>{{i.Quantidade}}</p>
+            </div>
+          </td>
+          <td class="wd-xs hidden-xs hidden-sm">
+            <div class="ph">
+                <p class="m0 text-muted">
+                <em class="fa fa-dollar mr fa-lg"></em>{{i.Quantidade * i.Produto.ValorCustoProduto | currency: ' '}}</p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </a>
+</div>-->
+
+<div class="panel b" style="padding: 13px;">
+  <small> Filtros </small>
+  <div class="row">
+      <!--
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6"> <input (keyup)="filter()" [(ngModel)]="filtro.Nome" type="text" class="form-control" placeholder="Buscar por Nome" /> </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6"> <input (keyup)="filter()" [(ngModel)]="filtro.CpfCnpj" type="text" class="form-control" placeholder="Buscar por Cpf/Cnpj" /> </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"> <input (keyup)="filter()" [(ngModel)]="filtro.Celular" type="text" class="form-control" placeholder="Buscar por Celular" /> </div>
+      -->
+  </div>
+</div>
+<div class="panel b" style="padding: 13px;">
+  <table class="table table-hover">
+      <thead>
+          <tr>
+              <th>Documento</th>
+              <th>Fornecedor</th>
+              <th>Data Compra</th>
+              <th>Qtd Itens</th>
+              <th>Valor Custo</th>
+              <th>Editar</th>
+              <th>Excluir</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let compra of compras">
+              <td>{{compra.NumDocumento}}</td>
+              <td>{{compra.Fornecedor.Pessoa.Nome}}</td>
+              <td>{{compra.DataCompra | date: 'dd/MM/yyyy'}}</td>
+              <td>{{getQtdItens(compra.CompraProduto)}}</td>
+              <td>{{getValorCusto(compra.CompraProduto) | currency: 'R$ '}}</td>
+              <td><button (click)="eventEdit.emit(compra)" class="btn btn-primary"><i  class="icon-pencil edit"></i></button></td>
+              <td><button (click)="remove(compra)" class="btn btn-danger"><i  class="fa fa-close remove"></i></button></td>
+          </tr>
+          <tr *ngIf="compras.length <= 0" class="alert alert-info"> <td colspan="7"> Nenhuma compra cadastrada! </td> </tr>
+      </tbody>
+  </table>
+</div>

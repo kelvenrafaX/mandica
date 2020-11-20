@@ -1,0 +1,24 @@
+{
+  "header": {
+      "search": {
+          "PLACEHOLDER": "Type and hit enter.."
+      }
+  },
+  "offsidebar": {
+      "setting": {
+          "SETTINGS": "Configurações"
+      }
+  },
+  "sidebar": {
+      "WELCOME": "Bem Vindo",
+      "heading": {
+          "HEADER": "Menu Heading"
+      },
+      "nav": {
+          "SINGLEVIEW": "Single View"
+      }
+  },
+  "dashboard": {
+      "WELCOME": "Welcome"
+  }
+}

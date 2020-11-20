@@ -1,0 +1,99 @@
+<div class="modal fade" bsModal #tarifaModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 70%; margin: 20px auto auto;" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="tarifaModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Cadastro de Tarifas/Prazos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel b" style="padding: 13px;">
+                            <div class="row">
+                              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <label for="parcela">Parcela</label>
+                                <input [(ngModel)]="naturezaParcela.Parcela" type="number" placeholder="1" name="parcela" class="form-control"/>
+                              </div>
+                              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <label for="tarifacao">Tarifação (%)</label>
+                                <input [(ngModel)]="naturezaParcela.Tarifacao" type="number" placeholder="0.00" name="tarifacao" class="form-control"/>
+                              </div>
+                              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <label for="prazo">Prazo (Dias)</label>
+                                <input [(ngModel)]="naturezaParcela.DiasVencimento" type="number" placeholder="30" name="prazo" class="form-control"/>
+                              </div>
+                              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                <label for="">Cadastrar</label>
+                                <button (click)="addNaturezaParcela()" class="btn bg-green btn-block"><i class="fa fa-plus fa-fw"></i> Cadastrar</button>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="panel b" style="padding: 13px;">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Parcela</th>
+                                        <th>Tarifação (%)</th>
+                                        <th>Prazo (Dias)</th>
+                                        <th>Atualizar</th>
+                                        <th>Ativar/Desativar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let forma of formaSelected.NaturezaParcelas">
+                                        <td><input [(ngModel)]="forma.Parcela" type="text" class="form-control"></td>
+                                        <td><input [(ngModel)]="forma.Tarifacao" type="text" class="form-control"></td>
+                                        <td><input [(ngModel)]="forma.DiasVencimento" type="text" class="form-control"></td>
+                                        <td><button (click)="update(formaSelected)" class="btn btn-info btn-block">Atualizar</button></td>
+                                        <td><button class="btn btn-danger btn-block">Desativar</button></td>
+                                      </tr>
+                                    <tr *ngIf="formaSelected.NaturezaParcelas.length <= 0" class="alert alert-info"> <td colspan="3"> Nenhuma tarifação cadastrada! </td> </tr>
+                                </tbody>
+                            </table>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 12px !important; font-size: 17px !important;" class="content-heading">
+  Cadastro de Formas de Pagamento
+</div>
+
+<div class="panel b" style="padding: 13px;">
+  <div class="row">
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+      <label for="forma-de-pagamento">Forma de Pagamento</label>
+      <input [(ngModel)]="forma.Descricao" type="text" placeholder="Descrição" name="forma-de-pagamento" class="form-control"/>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+      <label for="">Cadastrar</label>
+      <button (click)="addNatureza()" class="btn btn-success btn-block"><i class="fa fa-plus fa-fw"></i> Cadastrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="panel b" style="padding: 13px;">
+  <table class="table table-hover">
+      <thead>
+          <tr>
+              <th>Descrição</th>
+              <th>Ativar/Desativar</th>
+              <th>Tarifas/Prazos</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let forma of formas">
+              <td>{{forma.Descricao}}</td>
+              <td><button class="btn btn-danger btn-block">Desativar</button></td>
+              <td><button (click)="selected(forma, tarifaModal)" class="btn btn-info btn-block">Tarifas/Prazos</button></td>
+          </tr>
+          <tr *ngIf="formas.length <= 0" class="alert alert-info"> <td colspan="3"> Nenhum forma de pagamento cadastrada! </td> </tr>
+      </tbody>
+  </table>
+</div>

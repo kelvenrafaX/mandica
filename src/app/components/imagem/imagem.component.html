@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-3">
+    <div class="mb-lg">
+        {{imageError}}
+        <label for="image-input" class="file-upload">
+            <button class="btn btn-default btn-block"><em class="fa fa-upload mr"></em>UPLOAD</button>
+            <input id="image-input" accept="image/*" (change)="upload($event.target.files)" type="file">
+        </label>
+    </div>
+    <div class="mb-lg">
+        <label class="file-upload">
+            <button (click)="submit()" class="btn btn-green btn-block"><em class="fa fa-check  mr"></em>SALVAR</button>
+        </label>
+    </div>
+  </div>
+  <div class="col-md-9">
+      <div class="row">
+          <div *ngFor="let imagem of imagens" class="col-md-4 col-sm-4">
+            <div class="panel b text-center">
+                <a (click)="selectImage(imagem)" href="#" style="text-decoration: none;">
+                    <div class="panel-body">
+                        <div class="text-center text-muted">
+                            <h4 *ngIf="imagem.Principal" class="text-green">Imagem Principal</h4>
+                            <h4 *ngIf="!imagem.Principal">Imagem Secundária</h4>
+                        </div>
+                        <img style="width: 100%;" [src]="imagem.Descricao">
+                    </div>
+                </a>
+                <div class="panel-body">
+                    <div class="text-center text-muted">
+                        <button (click)="remove(imagem)" class="btn btn-default btn-block" style="color: salmon;" >  <i class="fa fa-times fa-fw"></i> Deletar</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div *ngIf="imagens.length === 0" class="col-md-12">
+                <h3>Nenhuma imagem selecionada.</h3>
+                <h5>Faça upload de quantas fotos quiser.</h5>
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,257 @@
+<div style="padding: 12px !important; font-size: 17px !important;" class="content-heading">
+    Consultar Produtos
+</div>
+<div class="row mb-2">
+    <div class="col-md-2">
+        <label for="">Código</label>
+        <div class="input-group">
+            <input [(ngModel)]="filtro.Id" class="form-control" type="text" placeholder="Pesquisar Código" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <label for="">Nome</label>
+        <div class="input-group">
+            <input [(ngModel)]="filtro.Nome" class="form-control" type="text" placeholder="Pesquisar Nome" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <label for="">Fornecedor</label>
+        <div class="input-group">
+            <select name="fornecedor" class="form-control" [(ngModel)]="filtro.Fornecedor">
+                <option value="0">Selecione</option>
+                <option *ngFor="let fornecedor of fornecedores" value="{{fornecedor.Id}}">{{fornecedor.Pessoa.Nome}}</option>
+            </select> 
+        </div>
+    </div>
+    <div class="col-md-2">
+        <label for="">Categoria</label>
+        <div class="input-group">
+            <select name="categoria" class="form-control" [(ngModel)]="filtro.Categoria">
+                <option value="0">Selecione</option>
+                <option *ngFor="let categoria of categorias; let i = index" value="{{categoria.Id}}">{{categoria.Descricao}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <label for="">Filtrar</label>
+        <button class="btn btn-success btn-block" (click)="carregarProdutos()"><strong><i class="icon-magnifier"></i></strong></button>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-6">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-primary" [ngClass]="{'active': filtro.Inativo == 2}">
+                <input [checked]="filtro.Inativo == 2" (click)="setBuscaInativos(2)" type="radio" name="options" id="option1" autocomplete="off" > Todos
+            </label>
+            <label class="btn btn-success" [ngClass]="{'active': filtro.Inativo == 0}">
+                <input [checked]="filtro.Inativo == 0" (click)="setBuscaInativos(0)" type="radio" name="options" id="option2" autocomplete="off"> Ativos
+            </label>
+            <label class="btn btn-danger" [ngClass]="{'active': filtro.Inativo == 1}">
+                <input [checked]="filtro.Inativo == 1" (click)="setBuscaInativos(1)" type="radio" name="options" id="option3" autocomplete="off"> Inativos
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-2">
+       
+    </div>
+    <div class="col-md-4">
+        
+    </div>
+    <div class="col-md-4">
+      
+    </div>
+   
+    <div style="font-size: 18px;" class="col-md-2 pull-right">
+        <i id="changeTable" (click)="changeTable('table')" class="col-md-6 icon-list pull-right"></i>
+        <i id="changeTable" (click)="changeTable('grid')" class="col-md-6 icon-grid pull-right"></i>
+    </div>
+</div>
+<div role="alert" class="col-md-12" *ngIf="!loadingProdutos && (produtos != undefined && produtos.length <= 0)">
+    <img class="center" src="assets/img/resultSearch/searchNoResults.png" alt="">
+</div>
+<div *ngIf="loadingProdutos" class="row panel-body loader-demo">
+    <div _ngcontent-aca-83="" class="line-scale">
+        <div _ngcontent-aca-83=""></div>
+        <div _ngcontent-aca-83=""></div>
+        <div _ngcontent-aca-83=""></div>
+        <div _ngcontent-aca-83=""></div>
+        <div _ngcontent-aca-83=""></div>
+    </div>
+</div>
+<div *ngIf="typeTable === 'table' && produtos.length > 0 && !loadingProdutos" class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Produtos</div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                            <!-- <th>Quantidade</th> -->
+                            <th>Valor Unitário</th>
+                            <th>Valor Compra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let produto of produtos">
+                            <td>{{produto.Id}}</td>
+                            <td>{{produto.Nome}}</td>
+                            <td>{{produto.Categoria.Descricao}}</td>
+                            <!-- <td>{{produto.Quantidade}}</td> -->
+                            <td>{{produto.ValorUnitarioLocacao | currency: 'R$'}}</td>
+                            <td>{{produto.ValorCustoProduto | currency: 'R$'}}</td>
+                            <td>
+                                <div class="btn-group" dropdown>
+                                    <button class="btn btn-default btn-xs dropdown-toggle" type="button" dropdownToggle>
+                                        <em class="fa fa-angle-down fa-fw"></em>Ações</button>
+                                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                                        <li (click)="openModal(classicModal, produto)"><a href="#">Editar</a>
+                                        </li>
+                                        <li (click)="inativarProduto(produto)"><a href="#">Inativar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="typeTable === 'grid'">
+    <div *ngIf="produtos.length > 0 && !loadingProdutos" class="row">
+        <div *ngFor="let produto of produtos" class="col-lg-3 col-md-4">
+            <div class="panel b text-center">
+                <div class="panel-body" style="min-height: 212px; max-height: 212px;">
+                    <div style="min-height: 136px; max-height: 136px;">
+                        <img class="img-circle thumb64" [src]="getUrlImagem(produto)" />
+                        <p class="h4 text-bold mb0">{{produto.Nome}}</p>
+                        <p>{{produto.Descricao}}</p>
+                    </div>
+                    <button (click)="openModal(classicModal, produto)" class="btn btn-success btn-oval" type="button"><i class="fa fa-edit fa-fw"></i> Editar</button>
+                    <button (click)="inativarProduto(produto)" class="btn btn-oval" [ngClass]="{'btn-danger': produto.Inativo === 0, 'btn-success': produto.Inativo === 1}" type="button">
+                        <i class="fa fa-fw" [ngClass]="{'fa-ban': produto.Inativo === 0, 'fa-check': produto.Inativo === 1}"></i>
+                        {{produto.Inativo === 1 && "Ativar" || "Inativar" }}
+                    </button>
+                </div>
+                <div class="panel-body bt">
+                    <div class="row">
+                        <div class="col-xs-6 br">
+                            <label>Preço Unitário</label>
+                            <strong>{{produto.ValorUnitarioLocacao | currency: 'R$'}}</strong>
+                            </div>
+
+
+                        <div class="col-xs-6 br">
+                                <label>Preço Compra</label>
+                            
+                            <strong>{{produto.ValorCustoProduto | currency: 'R$'}}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div style="width: 800px;" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="classicModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <!-- <h4 *ngIf="clienteEdit.Pessoa" class="modal-title">Cliente: {{clienteEdit.Pessoa.Nome}}</h4> -->
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="onSubmit(Imagem)" [formGroup]="form" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="row" style="margin-bottom: 20px;">
+                                <div class="col-md-3">
+                                    <div id="timelineProfilePic" [ngClass]="{'paddingCenter': imageUrl === 'assets/img/upload_gray.png'}" (click)="Imagem.click()">
+                                        <div id="image-class" class="img-upload">
+                                            <img [src]="imageUrl">
+                                            <div *ngIf="imageUrl === 'assets/img/upload_gray.png'" id="text-footer-image" class="mt-3" style="font-size:15px">
+                                                Adicionar imagem
+                                            </div>
+                                        </div>
+                                        <input type="file" #Imagem (change)="capturarImagem($event.target.files)" id="selecao-arquivo" accept="image/*" style=" opacity: 0; width: 0%; height: 0%;">
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="row" style="margin-bottom: 20px;">
+                                        <div class="col-md-4">
+                                            <label>Nome do Produto</label>
+                                            <input formControlName="Nome" class="form-control" type="text" placeholder="Digite o nome o produto"/>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Categoria</label>
+                                            <select formControlName="CategoriaId" class="form-control">
+                                                <option value="" selected> Selecione </option>
+                                                <option *ngFor="let categoria of categorias; let i = index" value="{{categoria.Id}}">{{categoria.Descricao}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Fornecedor</label>
+                                            <select formControlName="FornecedorId" name="fornecedor" id="" class="form-control">
+                                                <option value="" selected> Selecione </option>
+                                                <option *ngFor="let fornecedor of fornecedores" value="{{fornecedor.Id}}">{{fornecedor.Pessoa.Nome}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Valor unitário de Locacão</label>
+                                            <input formControlName="ValorUnitarioLocacao" class="form-control" type="number" placeholder="0,00"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Valor de Reposição</label>
+                                            <input formControlName="ValorUnitarioReposicao" class="form-control" type="number" placeholder="0,00"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Valor de Custo do Produto</label>
+                                            <input formControlName="ValorCustoProduto" class="form-control" type="number" placeholder="0,00"/> 
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="checkbox c-checkbox">
+                                                <label>
+                                                <input formControlName="Estocado" type="checkbox">
+                                                <span class="fa fa-check"></span>Exigir estoque</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 20px;">
+                                <div class="col-md-12">
+                                    <label>Descricao do Produto</label>
+                                    <textarea formControlName="Descricao" class="form-control" type="text" placeholder="Digite uma descrição para o produto" cols="5" rows="5"></textarea>   
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button  class="btn btn-success btn-block" type="submit">Atualizar</button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-danger btn-block">Limpar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>       
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

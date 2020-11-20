@@ -1,0 +1,170 @@
+<!-- Modal Add Fornecedor -->
+<div class="modal fade" bsModal #addFornecedorModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+  <div style="width: 90%; margin: 20px auto auto;" class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" aria-label="Close" (click)="addFornecedorModal.hide()">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Cadastro de Fornecedor</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-12">
+                      <app-add-fornecedor (eventAdd)="eventAddFornecedor($event)"></app-add-fornecedor>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #produtoModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 70%; margin: 20px auto auto;" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="produtoModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Cadastro de Produto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <app-add-produto (evenAdd)="eventAddProduto($event)"></app-add-produto>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" bsModal #acervoModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+  <div style="width: 70%; margin: 20px auto auto;" class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" aria-label="Close" (click)="acervoModal.hide()">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Cadastro de Acervo</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-12">
+                      <app-add-acervo (evenAdd)="eventAddAcervo($event)"></app-add-acervo>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form (ngSubmit)="onSubmit()" class="form-horizontal" role="form">
+          <div class="form-group">
+            <div class="col-md-4">
+              <label>Nº Documento</label>
+              <input name="documento" [(ngModel)]="compra.NumDocumento" class="form-control" type="number" placeholder="Nº Documento" />
+            </div>
+            <div class="col-md-4">
+              <label>Fornecedor</label>
+              <div class="row">
+                  <div class="col-md-9" style="padding-right: 0px">
+                      <ng-select #SelectFornecedorId [allowClear]="true" [disabled]="false"
+                      (selected)="selectedFornecedor($event)" placeholder="Selecione um Fornecedor">
+                      </ng-select>
+                  </div>
+                  <div class="col-md-3" style="padding-left: 10px">
+                      <button type="button" (click)="addFornecedorModal.show()" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i></button>                                
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label>Data da Compra</label>
+              <input name="datacompra" [textMask]="{mask: mask.maskData}" [(ngModel)]="compra.DataCompra" class="form-control" type="text" placeholder="Data da Compra" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4">
+              <label>Acervos <span style="color:red">*</span></label>
+              <div class="row">
+                <div class="col-md-10">
+                  <select name="select-acervo" [(ngModel)]="acervoL.Id" (change)="preenchePreco(acervoL)" class="form-control">
+                    <option value="0" selected>Selecione</option>              
+                    <option *ngFor="let i of acervos" [value]="i.Id">{{i.Nome}}</option>              
+                  </select>
+                </div>
+                <div class="col-md-2" style="padding-left: 0;">
+                  <button (click)="acervoModal.show()" type="button" class="btn bg-green"><i class="fa fa-plus fa-fw"></i></button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+                <label>Preço Unitário</label>
+                <input name="acervo-preco" min="0" [(ngModel)]="acervoL.ValorCustoProduto" class="form-control" type="number" placeholder="Preço Unitário" />
+              </div>
+            <div class="col-md-2">
+              <label>Quantidade</label>
+              <input name="acervo-quantidade" min="0" [(ngModel)]="acervoL.Quantidade" class="form-control" type="number" placeholder="Quantidade" />
+            </div>
+            <div class="col-md-3">
+              <label>Adicionar</label>
+              <button (click)="addList(acervoL)" type="button" class="btn btn-block bg-green"><i class="fa fa-plus fa-fw"></i> Adicionar na Lista</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4">
+              <label>Produtos <span style="color:red">*</span></label>
+              <div class="row">
+                <div class="col-md-10">
+                  <select name="select-produto" [(ngModel)]="produtoL.Id" (change)="preenchePreco(produtoL)" class="form-control">
+                    <option value="0" selected>Selecione</option>              
+                    <option *ngFor="let i of produtos" [value]="i.Id">{{i.Nome}}</option>              
+                  </select>
+                </div>
+                <div class="col-md-2" style="padding-left: 0;">
+                  <button (click)="produtoModal.show()" type="button" class="btn bg-green"><i class="fa fa-plus fa-fw"></i></button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label>Preço Unitário</label>
+              <input name="produto-preco" min="0" [(ngModel)]="produtoL.ValorCustoProduto" class="form-control" type="number" placeholder="Preço Unitário" />
+            </div>
+            <div class="col-md-2">
+              <label>Quantidade</label>
+              <input name="produto-quantidade" min="0" [(ngModel)]="produtoL.Quantidade" class="form-control" type="number" placeholder="Quantidade" />
+            </div>
+            <div class="col-md-3">
+              <label>Adicionar</label>
+              <button (click)="addList(produtoL)" type="button" class="btn btn-block bg-green"><i class="fa fa-plus fa-fw"></i> Adicionar na Lista</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <table class="table">
+                <tr>
+                  <th>Item</th>
+                  <th>Quantidade</th>
+                  <th>Preço Unitário</th>
+                  <th>Preço Total</th>
+                </tr>
+                <tr *ngFor="let item of lista">
+                  <td>{{item.Nome}}</td>
+                  <td>{{item.Quantidade}}</td>
+                  <td>{{item.ValorCustoProduto}}</td>
+                  <td>{{item.Quantidade * item.ValorCustoProduto}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <button [disabled]="!validForm()" class="btn btn-sm bg-green" type="submit">Cadastrar</button>
+          <button class="btn btn-sm btn-danger" type="button" (click)="clearForm()">Limpar</button>  
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

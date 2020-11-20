@@ -1,0 +1,62 @@
+<div class="panel b" style="padding: 13px;">
+  <small> Filtros </small>
+  <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6"> <input (keyup)="filter()" [(ngModel)]="filtro.Id" type="number" class="form-control" placeholder="Buscar por código" />  </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6"> <input (keyup)="filter()" [(ngModel)]="filtro.Nome" type="text" class="form-control" placeholder="Buscar por Nome" /> </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"> 
+        <ng-select #SelectListCategoriaId [allowClear]="true" [disabled]="false"
+        (selected)="selectedCategoria($event)" placeholder="Selecione uma categoria">
+        </ng-select>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"> 
+        <ng-select #SelectListSituacao [allowClear]="true" [disabled]="false"
+        (selected)="selectedSituacao($event)" placeholder="Selecione uma situação">
+        </ng-select>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"> 
+        <div class="checkbox c-checkbox">
+          <label>
+          <input (change)="filter()" [(ngModel)]="filtro.Terceiros" type="checkbox">
+          <span class="fa fa-check"></span>Produto de Terceiros</label>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="panel b" style="padding: 13px;">
+  <table class="table table-hover">
+      <thead>
+          <tr>
+              <th>Código</th>
+              <th>Foto</th>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Qtd</th>
+              <th>V.Locação</th>
+              <th>V.Reposição</th>
+              <th>Situação</th>
+              <th class="text-center">Editar</th>
+              <th class="text-center">Excluir</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let acervo of acervos">
+              <td style="width:10%;">{{acervo.Id}}</td>
+              <td style="width:10%;" class="text-center"><img class="img-responsive" [src]="getUrlImagem(acervo)"></td>
+              <td style="width:10%;">{{acervo.Nome}}</td>
+              <td style="width:10%;">{{acervo.Categoria.Descricao}}</td>
+              <td style="width:10%;">{{acervo.Quantidade}}</td>
+              <td style="width:10%;">{{acervo.ValorUnitarioLocacao | currency:'R$ '}}</td>
+              <td style="width:10%;">{{acervo.ValorUnitarioReposicao | currency:'R$ '}}</td>
+              <td style="width:10%;">{{getSituacao(acervo.Situacao)}}</td>
+              <td style="width:10%;" class="text-center"><i (click)="edit(acervo)" class="icon-pencil edit"></i></td>
+              <td style="width:10%;" class="text-center"><i (click)="remove(acervo)" class="fa fa-close remove"></i></td>
+          </tr>
+          <tr *ngIf="acervos.length <= 0" class="h3 text-center text-muted"> <td colspan="10"> Nenhum produto cadastrado! </td> </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="10" class="text-right"><h4>CUSTO TOTAL DE ITENS EM ESTOQUE: {{getCustoTotal() | currency:'R$ '}}</h4></td>
+        </tr>
+      </tfoot>
+  </table>
+</div>

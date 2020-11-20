@@ -1,0 +1,60 @@
+<div class="modal fade" bsModal #addAcervoModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 80%; margin: 20px auto auto;" class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addAcervoModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Cadastro de Acervo</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <app-add-produto [tipo]="tipo" (eventAdd)="addAcervo($event, addAcervoModal)"></app-add-produto>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" bsModal #editAcervoModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 80%; margin: 20px auto auto;" class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="editAcervoModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Editando Acervo</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <app-edit-produto [tipo]="tipo" #editAcervoComponent (eventEdit)="editAcervo($event, editAcervoModal)"></app-edit-produto>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 12px !important; font-size: 17px !important;" class="content-heading">
+    Cadastro de Acervos
+</div>
+<div class="row">
+    <div (click)="addAcervoModal.show()" class="col-lg-4 col-md-4 col-sm-4">
+        <a class="no-under">
+        <div class="panel widget bg-green">
+            <div class="row row-table">
+                <div class="col-xs-3 text-center bg-green-dark pv-lg">
+                    <em class="fa fa-plus fa-2x"></em>
+                </div>
+                <div class="col-xs-9 pv-lg">
+                    <div style="font-size: 18px;"><b>Adicionar Novo Acervo</b></div>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+</div>
+<app-list-produtos [tipo]="tipo" (filtrando)="filtrando($event)" (eventEdit)="prodSelectedEdit($event)" (eventRemove)="eventRemove($event)" [editAcervoModal]="editAcervoModal" [acervos]="acervos"></app-list-produtos>

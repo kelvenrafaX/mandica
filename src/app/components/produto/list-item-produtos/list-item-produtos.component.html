@@ -1,0 +1,40 @@
+<div class="mb" style="height: 320px; overflow-y: auto;" infinite-scroll infiniteScrollDistance="2" scrollWindow="false">
+    <div class="row" style="margin-bottom: 10px;">
+        <div style="display: table;" class="col-md-3">
+            <input (keyup)="getProdutosFiltrado()" [(ngModel)]="filtro.Id" class="form-control" type="text" placeholder="Pesquisar Código" />
+        </div>
+        <div style="display: table;" class="col-md-3">
+            <input (keyup)="getProdutosFiltrado()" [(ngModel)]="filtro.Nome" class="form-control" type="text" placeholder="Pesquisar Nome" />
+        </div>
+    </div>
+    <div style="margin-top: 10px;">
+        <h3 class="text-center text-muted" *ngIf="produtos.length <= 0"> <i class="fa fa-search fa-fw"></i> Nenhum acervo cadastrado! </h3>
+        <div *ngIf="produtos.length > 0">        
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Valor Unitário</th>
+                        <th>Estoque</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="cursor: pointer;" *ngFor="let produto of produtos" (click)="addProduto(produto)">
+                        <td class="order-pic thumb64">
+                            <img width="100%" [src]="getUrlImagem(produto)" />
+                        </td>
+                        <td>{{produto.Nome | uppercase}}</td>
+                        <td>{{produto.ValorUnitarioLocacao | currency: "R$ "}}</td>
+                        <td>
+                            <span *ngIf="produto.Terceiros">Produto de Terceiros</span>
+                            <span *ngIf="!produto.Terceiros && produto.Quantidade !== 0">{{produto.Quantidade}}</span>
+                            <span *ngIf="!produto.Terceiros && produto.Quantidade === 0" style="color: red;">Sem estoque</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>    
+        </div>
+    </div>
+</div>
+<pagination *ngIf="pagination.totalItems > 0" class="pagination-sm" [totalItems]="pagination.totalItems" [(ngModel)]="pagination.currentPage" [maxSize]="pagination.maxSize" [boundaryLinks]="true" [rotate]="false" (pageChanged)="pageChanged($event)" [itemsPerPage]="pagination.itemsPerPage"></pagination>

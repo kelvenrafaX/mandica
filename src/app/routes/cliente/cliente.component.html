@@ -1,0 +1,7 @@
+<div style="padding: 12px !important; font-size: 17px !important;" class="content-heading">
+    Consultar Clientes
+</div>
+<app-menu-cliente (eventSelectedMenu)="reciverMenuSelected($event)"></app-menu-cliente>
+<app-list-clientes *ngIf="selectedMenu && selectedMenu.name === 'Clientes'" ></app-list-clientes>
+<app-list-fornecedor *ngIf="selectedMenu && selectedMenu.name === 'Fornecedores'" ></app-list-fornecedor>
+<!-- <app-list-funcionario *ngIf="selectedMenu && selectedMenu.name === 'Funcionários'" ></app-list-funcionario> -->

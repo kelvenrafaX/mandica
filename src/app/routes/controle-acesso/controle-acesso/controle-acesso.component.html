@@ -1,0 +1,77 @@
+<div class="modal fade" bsModal #addAcessoModel="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel"
+    aria-hidden="false">
+    <div style="width: 80%; margin: 20px auto auto;" class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addAcessoModel.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Controle de Acesso</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-bottom: 5px">
+
+                    <div class="col-md-4">
+                        <label>Usuario </label>
+                        <input class="form-control" type="text" placeholder="Usuário" [(ngModel)]="funcionario.Usuario" />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Senha </label>
+                        <input type="password" class="form-control" placeholder="Senha de Acesso" [(ngModel)]="funcionario.Senha" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4" *ngFor="let modulo of modulos">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" id="table-ext-1">
+                                <thead>
+                                    <tr>
+                                        <th>{{modulo.Id}}</th>
+                                        <th>{{modulo.Descricao}}</th>
+                                        <th checkAll>
+                                            <div class="checkbox c-checkbox">
+                                                <label>
+                                                    <input (change)="checkedAll(modulo)" type="checkbox" [(ngModel)]="modulo.Checked" name="modulo-{{modulo.Id}}" />
+                                                    <span class="fa fa-check"></span>
+                                                </label>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let moduloItem of modulo.ModulosItem; let i = index">
+                                        <td>{{moduloItem.Id}}</td>
+                                        <td>{{moduloItem.Descricao}}</td>
+                                        <td>
+                                            <div class="checkbox c-checkbox">
+                                                <label>
+                                                    <input type="checkbox" [(ngModel)]="modulo.ModulosItem[i].Checked" name="moduloItem-{{modulo.Id}}-{{moduloItem.Id}}"/>
+                                                    <span class="fa fa-check"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                            <button class="btn btn-success pull-right" (click)="salvarDados()">Salvar</button>
+                    </div>
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+
+    <app-list-funcionarios (filtrando)="filtrando($event)" (eventRemove)="funcionarioSelectedRemove($event)"
+        (eventEdit)="funcionarioSelectedEdit($event)" (eventControleAcesso)="controleAcesso($event,addAcessoModel)"
+        [funcionarios]="funcionarios" [controleAcesso]="true"></app-list-funcionarios>
+
+</div>

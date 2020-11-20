@@ -1,0 +1,70 @@
+<label>{{Title}}</label>
+<div class="row">
+    <div class="col-md-9" style="padding-right: 0px">
+        <ng-select #Select [allowClear]="true" [disabled]="false" (keyup)="onKey($event)"
+        [multiple]="multiple" [active]="active"
+        (selected)="selected($event)" placeholder="Selecione um(a) {{Title}}">
+        </ng-select>
+    </div>
+    <div class="col-md-3" style="padding-left: 10px">
+        <button type="button" class="btn btn-green" (click)="addModal.show()"><i class="fa fa-plus fa-fw"></i></button>                                
+    </div>
+</div>
+
+<!-- Modal Add Categoria -->
+<div class="modal fade" bsModal #addModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="bsModalLabel" aria-hidden="false">
+    <div style="width: 90%; margin: 20px auto auto;" class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{{Title}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <tabset class="bg-white p0" [justified]="true">
+                            <tab>
+                                <ng-template tabHeading>
+                                    Acervo
+                                </ng-template>
+                                <div class="list-group mb0">
+                                    <div class="container">
+                                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 3rem;">
+                                            <app-add-produto #addAcervo (eventAdd)="refresh($event)"></app-add-produto>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab>
+                                <ng-template tabHeading>
+                                   Produtos
+                                </ng-template>
+                                <div class="list-group mb0">
+                                    <div class="container">
+                                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 3rem;">
+                                            <app-add-produto #addProduto (eventAdd)="refresh($event)"></app-add-produto>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab>
+                                <ng-template tabHeading>
+                                    Serviços
+                                </ng-template>
+                                <div class="list-group mb0">
+                                    <div class="container">
+                                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 3rem;">
+                                            <app-add-produto #addServico (eventAdd)="refresh($event)"></app-add-produto>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
